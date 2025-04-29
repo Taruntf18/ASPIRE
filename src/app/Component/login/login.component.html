@@ -1,0 +1,23 @@
+
+<div class="login-background">
+  <div class="background">
+    <div class="shape"></div>
+    <div class="shape"></div>
+  </div>
+  
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="heading">
+      <img src="assets/NAL/CSIR-National_Aerospace_Laboratories_Logo.png" alt="Logo">
+      <h3>ASPIRE</h3>
+    </div>
+    <p class="subtitle">AS9100 Project Information & Review Engine</p>
+
+    <label for="userid">User ID</label>
+    <input type="text" id="userid" formControlName="userId" placeholder="Enter your User ID" />
+    
+    <label for="password">Password</label>
+    <input type="password" id="password" formControlName="password" placeholder="Enter your Password" />
+    
+    <button type="submit" [disabled]="!loginForm.valid">Log In</button>
+  </form>
+</div>
