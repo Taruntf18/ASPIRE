@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './Component/login/login.component';
 
+
 export const routes: Routes = [
 
     {
@@ -9,8 +10,11 @@ export const routes: Routes = [
     },
     {
         path: 'login',
-        loadComponent: () =>
-          import('./Component/login/login.component').then(m => m.LoginComponent)
-      },
-    
+        loadComponent: () => import('./Component/login/login.component').then(m => m.LoginComponent)
+    },
+    {
+        path: 'aqm',
+        loadComponent: () => import('./Component/aqm/aqm.component').then(m => m.AQMComponent)
+    },
+
 ];

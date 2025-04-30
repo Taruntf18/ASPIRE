@@ -1,0 +1,130 @@
+/* Full screen center with smooth gradient and proper alignment */
+.aqm-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #c9d6ff, #e2e2e2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+    font-family: 'Roboto', sans-serif;
+    flex-direction: column;
+}
+
+/* Glassmorphism card with defined shadow and proper padding */
+.aqm-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    border-radius: 1.5rem;
+    padding: 3rem;
+    max-width: 630px;
+    width: 100%;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Title styling with improved color contrast */
+.aqm-title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: #3b5998;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    letter-spacing: 0.5px;
+    width: 100%;
+}
+
+/* Labels with improved contrast and spacing */
+.form-label {
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    width: 100%;
+}
+
+/* Textarea and input with smoother borders, padding, and margin */
+.form-control {
+    border-radius: 0.85rem;
+    padding: 1rem;
+    font-size: 1rem;
+    border: 1px solid #e0e0e0;
+    background-color: #f9f9f9;
+    box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+
+/* Focus effect with smooth transition */
+.form-control:focus {
+    border-color: #3b5998;
+    box-shadow: 0 0 0 4px rgba(59, 89, 152, 0.2);
+    outline: none;
+}
+
+/* Read-only area styled to look like a card with alignment */
+.read-only-box {
+    background: #f4f7fa;
+    border-radius: 1rem;
+    padding: 1rem;
+    font-size: 1rem;
+    color: #6c757d;
+    border: 1px solid #dfe2e6;
+    margin-bottom: 1.5rem;
+    width: 100%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* File inputs with clean styling and margin */
+input[type="file"] {
+    padding: 0.55rem;
+    font-size: 1rem;
+    background-color: #f0f0f0;
+    border: 1px solid #dcdcdc;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+    width: 33%;
+}
+
+/* Submit button with a more engaging hover effect */
+.btn-primary {
+    background-color: #3b5998;
+    border: none;
+    padding: 0.85rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 1rem;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    background-color: #2d4373;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Enhanced responsiveness for mobile devices */
+@media (max-width: 576px) {
+    .aqm-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .aqm-title {
+        font-size: 1.75rem;
+    }
+
+    .form-control, .read-only-box, .btn-primary {
+        font-size: 0.95rem;
+    }
+
+    .btn-primary {
+        padding: 0.75rem 1.25rem;
+        font-size: 1rem;
+    }
+}

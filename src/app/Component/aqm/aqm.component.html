@@ -1,1 +1,73 @@
-<p>aqm works!</p>
+<div class="aqm-container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="aqm-card card p-4 shadow-lg rounded">
+      <div class="text-center mb-4">
+        <h2 class="aqm-title">AQM Form</h2>
+      </div>
+  
+      <form [formGroup]="aqmForm" (ngSubmit)="onSubmit()">
+        <!-- Quality Policy -->
+        <div class="mb-3">
+          <label for="qualityPolicy" class="form-label">Quality Policy</label>
+          <textarea
+            id="qualityPolicy"
+            class="form-control"
+            formControlName="qualityPolicy"
+            rows="4"
+            placeholder="Enter the quality policy..."
+          ></textarea>
+        </div>
+  
+        <!-- Major Objectives -->
+        <div class="mb-3">
+          <label for="majorObjectives" class="form-label">Major Objectives</label>
+          <input
+            type="text"
+            id="majorObjectives"
+            class="form-control"
+            formControlName="majorObjectives"
+            placeholder="Enter major objectives"
+          />
+        </div>
+  
+        <!-- Leadership (Read-only) -->
+        <div class="mb-3">
+          <label class="form-label">Leadership</label>
+          <div class="form-control bg-light read-only-box">
+            {{ leadershipInfo || "Loading leadership information..." }}
+          </div>
+        </div>
+  
+        <!-- Organization Chart Upload -->
+        <div class="mb-3">
+          <label for="orgChart" class="form-label">Organization Chart (Image)</label>
+          <input
+            type="file"
+            id="orgChart"
+            class="form-control"
+            (change)="onFileChange($event, 'orgChart')"
+            accept="image/*"
+          />
+        </div>
+  
+        <!-- Upload AMQ Document -->
+        <div class="mb-4">
+          <label for="amqDoc" class="form-label">Upload AMQ Document</label>
+          <input
+            type="file"
+            id="amqDoc"
+            class="form-control"
+            (change)="onFileChange($event, 'amqDoc')"
+            accept=".pdf,.doc,.docx"
+          />
+        </div>
+  
+        <!-- Submit Button -->
+        <div class="d-grid">
+          <button type="submit" class="btn btn-primary btn-lg shadow-sm" [disabled]="aqmForm.invalid">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
