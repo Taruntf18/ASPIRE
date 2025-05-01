@@ -1,73 +1,109 @@
-<div class="aqm-container d-flex justify-content-center align-items-center min-vh-100">
-    <div class="aqm-card card p-4 shadow-lg rounded">
-      <div class="text-center mb-4">
-        <h2 class="aqm-title">AQM Form</h2>
+<div class="aqm-container">
+  <header class="header">
+    <h1>AQM</h1>
+    <p>APEX QUALITY MANUAL</p>
+  </header>
+
+  <form [formGroup]="aqmForm" (ngSubmit)="onSubmit()" class="aqm-form">
+    <!-- Quality Policy -->
+    <div class="form-section">
+      <h2>1. Quality Policy</h2>
+      <div class="form-group">
+        <label for="qualityPolicy">Organization's Quality Policy</label>
+        <textarea id="qualityPolicy" formControlName="qualityPolicy" 
+                  placeholder="Enter your quality policy statement..."></textarea>
+        <div *ngIf="aqmForm.get('qualityPolicy')?.invalid && aqmForm.get('qualityPolicy')?.touched" 
+             class="error-message">
+          Quality policy is required (minimum 50 characters)
+        </div>
       </div>
-  
-      <form [formGroup]="aqmForm" (ngSubmit)="onSubmit()">
-        <!-- Quality Policy -->
-        <div class="mb-3">
-          <label for="qualityPolicy" class="form-label">Quality Policy</label>
-          <textarea
-            id="qualityPolicy"
-            class="form-control"
-            formControlName="qualityPolicy"
-            rows="4"
-            placeholder="Enter the quality policy..."
-          ></textarea>
+    </div>
+
+    <!-- Major Objectives -->
+
+    
+    <div class="form-section">
+      <h2>2. Major Objectives</h2>
+      <div class="form-group">
+        <label for="majorObjectives">Key Quality Objectives</label>
+        <textarea id="majorObjectives" formControlName="majorObjectives" 
+                  placeholder="List your major quality objectives..."></textarea>
+        <div *ngIf="aqmForm.get('majorObjectives')?.invalid && aqmForm.get('majorObjectives')?.touched" 
+             class="error-message">
+          Objectives are required (minimum 30 characters)
         </div>
-  
-        <!-- Major Objectives -->
-        <div class="mb-3">
-          <label for="majorObjectives" class="form-label">Major Objectives</label>
-          <input
-            type="text"
-            id="majorObjectives"
-            class="form-control"
-            formControlName="majorObjectives"
-            placeholder="Enter major objectives"
-          />
+      </div>
+    </div>
+
+    <!-- Leadership -->
+    <div class="form-section">
+      <h2>3. Leadership</h2>
+      <div class="leadership-container">
+        <div *ngIf="isLoading" class="loading">Loading leadership data...</div>
+        <div *ngIf="!isLoading && leadershipData.length === 0" class="no-data">
+          No leadership data available
         </div>
-  
-        <!-- Leadership (Read-only) -->
-        <div class="mb-3">
-          <label class="form-label">Leadership</label>
-          <div class="form-control bg-light read-only-box">
-            {{ leadershipInfo || "Loading leadership information..." }}
+        <div *ngFor="let leader of leadershipData" class="leader-card">
+          <img [src]="leader.avatar" alt="Leader avatar" class="avatar">
+          <div class="leader-info">
+            <h3>{{ leader.name }}</h3>
+            <p class="position">{{ leader.position }}</p>
+            <p class="department">{{ leader.department }}</p>
           </div>
         </div>
-  
-        <!-- Organization Chart Upload -->
-        <div class="mb-3">
-          <label for="orgChart" class="form-label">Organization Chart (Image)</label>
-          <input
-            type="file"
-            id="orgChart"
-            class="form-control"
-            (change)="onFileChange($event, 'orgChart')"
-            accept="image/*"
-          />
-        </div>
-  
-        <!-- Upload AMQ Document -->
-        <div class="mb-4">
-          <label for="amqDoc" class="form-label">Upload AMQ Document</label>
-          <input
-            type="file"
-            id="amqDoc"
-            class="form-control"
-            (change)="onFileChange($event, 'amqDoc')"
-            accept=".pdf,.doc,.docx"
-          />
-        </div>
-  
-        <!-- Submit Button -->
-        <div class="d-grid">
-          <button type="submit" class="btn btn-primary btn-lg shadow-sm" [disabled]="aqmForm.invalid">
-            Submit
-          </button>
-        </div>
-      </form>
+      </div>
+      <button type="button" (click)="loadLeadershipData()" class="refresh-btn">
+        Refresh Data
+      </button>
     </div>
-  </div>
-  
+
+    <!-- Organization Chart -->
+    <div class="form-section">
+      <h2>4. Organization Chart</h2>
+      <div class="file-upload-group">
+        <label>Upload Organization Chart (Image)</label>
+        <input type="file" id="orgChart" (change)="onFileChange($event, 'orgChart')" accept="image/*" hidden>
+        <label for="orgChart" class="file-upload-btn">
+          Choose File
+        </label>
+        <span class="file-name">{{ orgChartFile?.name || 'No file selected' }}</span>
+        <button *ngIf="orgChartFile" type="button" (click)="removeFile('orgChart')" class="remove-btn">
+          Remove
+        </button>
+        <div *ngIf="orgChartPreview" class="image-preview">
+          <img [src]="orgChartPreview" alt="Organization chart preview">
+        </div>
+      </div>
+    </div>
+
+    <!-- AQM Document -->
+    <div class="form-section">
+      <h2>5. Upload AQM Document</h2>
+      <div class="file-upload-group">
+        <label>Upload AQM Document (PDF/DOC)</label>
+        <input type="file" id="aqmDocument" (change)="onFileChange($event, 'aqmDocument')" 
+               accept=".pdf,.doc,.docx" hidden>
+        <label for="aqmDocument" class="file-upload-btn">
+          Choose File
+        </label>
+        <span class="file-name">{{ aqmDocumentFile?.name || 'No file selected' }}</span>
+        <span *ngIf="aqmDocumentFile" class="file-size">
+          {{ getFileSize(aqmDocumentFile.size) }}
+        </span>
+        <button *ngIf="aqmDocumentFile" type="button" (click)="removeFile('aqmDocument')" class="remove-btn">
+          Remove
+        </button>
+      </div>
+    </div>
+
+    <!-- Form Actions -->
+    <div class="form-actions">
+      <button type="submit" [disabled]="aqmForm.invalid" class="submit-btn">
+        Submit AQM Data
+      </button>
+      <button type="button" (click)="resetForm()" class="reset-btn">
+        Reset Form
+      </button>
+    </div>
+  </form>
+</div>
