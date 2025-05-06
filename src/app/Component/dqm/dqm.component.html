@@ -1,0 +1,246 @@
+<div class="dqm-background">
+  <div class="dqm-container">
+    <header class="header">
+      <h1>DQM</h1>
+      <p>Divisional Quality Management</p>
+    </header>
+    
+    <!-- First Form -->
+    <form *ngIf="!showSecondForm" [formGroup]="dqmForm" class="dqm-form">
+      <!-- Division Selection -->
+      <div class="form-section">
+        <h2>1. Division Selection</h2>
+        <div class="form-group">
+          <label for="division">Division</label>
+          <select class="form-control" id="division" formControlName="division" required>
+            <option value="" disabled selected>Select Division</option>
+            <option *ngFor="let division of divisions" [value]="division">{{ division }}</option>
+          </select>
+          <div *ngIf="dqmForm.get('division')?.invalid && dqmForm.get('division')?.touched" class="error-message">
+            Division is required
+          </div>
+        </div>
+      </div>
+  
+      <!-- Main Objectives -->
+      <div class="form-section">
+        <h2>2. Main Objectives</h2>
+        <div class="form-group">
+          <label for="mainObjectives">Key Quality Objectives</label>
+          <textarea class="form-control" id="mainObjectives" rows="5"
+                    formControlName="mainObjectives" required
+                    placeholder="Enter your main objectives..."></textarea>
+          <div *ngIf="dqmForm.get('mainObjectives')?.invalid && dqmForm.get('mainObjectives')?.touched" class="error-message">
+            Main Objectives are required
+          </div>
+        </div>
+      </div>
+  
+      <!-- Core Activities -->
+      <div class="form-section">
+        <h2>3. Core Activities</h2>
+        <div class="form-group">
+          <div formArrayName="coreActivities">
+            <div *ngFor="let activity of coreActivities.controls; let i = index" class="input-group">
+              <input type="text" class="form-control" 
+                     [formControlName]="i"
+                     [attr.name]="'coreActivity_' + i"
+                     placeholder="Enter core activity...">
+              <button type="button" class="btn btn-remove" (click)="removeCoreActivity(i)" 
+                      *ngIf="coreActivities.length > 1">
+                ×
+              </button>
+            </div>
+          </div>
+          <div *ngIf="coreActivities.invalid && (coreActivities.touched || dqmForm.touched)" class="error-message">
+            All core activities are required
+          </div>
+          <button type="button" class="btn btn-add" (click)="addCoreActivity()">
+            + Add Core Activity
+          </button>
+        </div>
+      </div>
+  
+      <!-- Procedures with Document Upload -->
+      <div class="form-section">
+        <h2>4. Procedures</h2>
+        <div class="form-group">
+          <div formArrayName="procedures">
+            <div *ngFor="let procedure of procedures.controls; let i = index" class="procedure-item">
+              <div class="procedure-input-group">
+                <input type="text" class="form-control" 
+                       [formControlName]="i"
+                       [attr.name]="'procedure_' + i"
+                       placeholder="Enter procedure...">
+                <button type="button" class="btn btn-remove" (click)="removeProcedure(i)" 
+                        *ngIf="procedures.length > 1">
+                  ×
+                </button>
+              </div>
+              
+              <div class="document-upload-group">
+                <input type="file" 
+                       [id]="'procedureDoc_' + i" 
+                       (change)="onProcedureDocChange($event, i)" 
+                       accept=".pdf,.doc,.docx,.xls,.xlsx" 
+                       hidden>
+                <label style="width: fit-content;" [for]="'procedureDoc_' + i" class="file-upload-btn">
+                  <i class="upload-icon">??</i> Upload Document
+                </label>
+                <div class="file-info" *ngIf="procedureDocuments[i]?.file">
+                  <span class="file-name">{{ procedureDocuments[i].file?.name }}</span>
+                  <span class="file-size">{{ getFileSize(procedureDocuments[i].file?.size) }}</span>
+                  <button type="button" (click)="removeProcedureDoc(i)" class="remove-doc-btn">
+                    ×
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="procedures.invalid && (procedures.touched || dqmForm.touched)" class="error-message">
+            All procedures are required
+          </div>
+          <button type="button" class="btn btn-add" (click)="addProcedure()">
+            + Add Procedure
+          </button>
+        </div>
+      </div>
+  
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button type="button" (click)="handleNext()" class="reset-btn" [disabled]="dqmForm.invalid">
+          Next
+        </button>
+      </div>
+    </form>
+
+    <!-- Second Form -->
+    <form *ngIf="showSecondForm" class="dqm-form">
+      <h2>Additional Information for Procedures</h2>
+      <p>Procedure {{ currentProcedureIndex + 1 }} of {{ procedures.length }}: {{ dqmForm.value.procedures[currentProcedureIndex] }}</p>
+      
+      <!-- Work Instructions -->
+      <div class="form-section">
+        <h4>Work Instructions</h4>
+        <div *ngFor="let instruction of workInstructions[currentProcedureIndex]; let instructionIndex = index" class="input-group">
+          <input type="text" class="form-control" 
+                 [(ngModel)]="workInstructions[currentProcedureIndex][instructionIndex].text"
+                 [ngModelOptions]="{standalone: true}"
+                 placeholder="Enter work instruction...">
+          
+          <div class="document-upload-group">
+            <input type="file" 
+                   [id]="'workInstructionDoc_' + currentProcedureIndex + '_' + instructionIndex" 
+                   (change)="onWorkInstructionDocChange($event, currentProcedureIndex, instructionIndex)" 
+                   accept=".pdf,.doc,.docx,.xls,.xlsx" 
+                   hidden>
+            <label [for]="'workInstructionDoc_' + currentProcedureIndex + '_' + instructionIndex" class="file-upload-btn">
+              <i class="upload-icon">??</i> Upload Document
+            </label>
+            <div class="file-info" *ngIf="workInstructions[currentProcedureIndex][instructionIndex].document">
+              <span class="file-name">{{ workInstructions[currentProcedureIndex][instructionIndex].document?.name }}</span>
+              <span class="file-size">{{ getFileSize(workInstructions[currentProcedureIndex][instructionIndex].document?.size) }}</span>
+              <button type="button" (click)="removeWorkInstructionDoc(currentProcedureIndex, instructionIndex)" class="remove-doc-btn">
+                ×
+              </button>
+            </div>
+          </div>
+          
+          <button type="button" class="btn btn-remove" (click)="removeWorkInstruction(currentProcedureIndex, instructionIndex)" 
+                  *ngIf="workInstructions[currentProcedureIndex].length > 1">
+            ×
+          </button>
+        </div>
+        <button type="button" class="btn btn-add" (click)="addWorkInstruction(currentProcedureIndex)">
+          + Add Work Instruction
+        </button>
+      </div>
+      
+      <!-- Quality Records -->
+      <div class="form-section">
+        <h4>Quality Records</h4>
+        <div *ngFor="let record of qualityRecords[currentProcedureIndex]; let recordIndex = index" class="input-group">
+          <input type="text" class="form-control" 
+                 [(ngModel)]="qualityRecords[currentProcedureIndex][recordIndex].text"
+                 [ngModelOptions]="{standalone: true}"
+                 placeholder="Enter quality record...">
+          
+          <div class="document-upload-group">
+            <input type="file" 
+                   [id]="'qualityRecordDoc_' + currentProcedureIndex + '_' + recordIndex" 
+                   (change)="onQualityRecordDocChange($event, currentProcedureIndex, recordIndex)" 
+                   accept=".pdf,.doc,.docx,.xls,.xlsx" 
+                   hidden>
+            <label [for]="'qualityRecordDoc_' + currentProcedureIndex + '_' + recordIndex" class="file-upload-btn">
+              <i class="upload-icon">??</i> Upload Document
+            </label>
+            <div class="file-info" *ngIf="qualityRecords[currentProcedureIndex][recordIndex].document">
+              <span class="file-name">{{ qualityRecords[currentProcedureIndex][recordIndex].document?.name }}</span>
+              <span class="file-size">{{ getFileSize(qualityRecords[currentProcedureIndex][recordIndex].document?.size) }}</span>
+              <button type="button" (click)="removeQualityRecordDoc(currentProcedureIndex, recordIndex)" class="remove-doc-btn">
+                ×
+              </button>
+            </div>
+          </div>
+          
+          <button type="button" class="btn btn-remove" (click)="removeQualityRecord(currentProcedureIndex, recordIndex)" 
+                  *ngIf="qualityRecords[currentProcedureIndex].length > 1">
+            ×
+          </button>
+        </div>
+        <button type="button" class="btn btn-add" (click)="addQualityRecord(currentProcedureIndex)">
+          + Add Quality Record
+        </button>
+      </div>
+      
+      <!-- Formats -->
+      <div class="form-section">
+        <h4>Formats</h4>
+        <div *ngFor="let format of formats[currentProcedureIndex]; let formatIndex = index" class="input-group">
+          <input type="text" class="form-control" 
+                 [(ngModel)]="formats[currentProcedureIndex][formatIndex].text"
+                 [ngModelOptions]="{standalone: true}"
+                 placeholder="Enter format...">
+          
+          <div class="document-upload-group">
+            <input type="file" 
+                   [id]="'formatDoc_' + currentProcedureIndex + '_' + formatIndex" 
+                   (change)="onFormatDocChange($event, currentProcedureIndex, formatIndex)" 
+                   accept=".pdf,.doc,.docx,.xls,.xlsx" 
+                   hidden>
+            <label [for]="'formatDoc_' + currentProcedureIndex + '_' + formatIndex" class="file-upload-btn">
+              <i class="upload-icon">📄</i> Upload Document
+            </label>
+            <div class="file-info" *ngIf="formats[currentProcedureIndex][formatIndex].document">
+              <span class="file-name">{{ formats[currentProcedureIndex][formatIndex].document?.name }}</span>
+              <span class="file-size">{{ getFileSize(formats[currentProcedureIndex][formatIndex].document?.size) }}</span>
+              <button type="button" (click)="removeFormatDoc(currentProcedureIndex, formatIndex)" class="remove-doc-btn">
+                ×
+              </button>
+            </div>
+          </div>
+          
+          <button type="button" class="btn btn-remove" (click)="removeFormat(currentProcedureIndex, formatIndex)" 
+                  *ngIf="formats[currentProcedureIndex].length > 1">
+            ×
+          </button>
+        </div>
+        <button type="button" class="btn btn-add" (click)="addFormat(currentProcedureIndex)">
+          + Add Format
+        </button>
+      </div>
+      
+      <div class="form-actions">
+        <button type="button" (click)="goBack()" class="btn btn-secondary">
+          Back
+        </button>
+        <button *ngIf="!allProceduresCompleted" type="button" (click)="submitProcedureDetails()" class="btn btn-primary">
+          Save & Continue
+        </button>
+        <button *ngIf="allProceduresCompleted" type="button" (click)="onSubmitSecondForm()" class="btn btn-success">
+          Submit All
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

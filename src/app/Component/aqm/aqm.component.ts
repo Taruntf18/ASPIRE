@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
@@ -21,7 +21,9 @@ export class AQMComponent implements OnInit {
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.aqmForm = this.fb.group({
       qualityPolicy: ['', [Validators.required, Validators.minLength(50)]],
-      majorObjectives: ['', [Validators.required, Validators.minLength(30)]]
+      majorObjectives: this.fb.array([
+        this.fb.control('', [Validators.required, Validators.minLength(3)])
+      ])
     });
   }
 
@@ -29,24 +31,21 @@ export class AQMComponent implements OnInit {
     this.loadLeadershipData();
   }
 
+  get majorObjectives(): FormArray {
+    return this.aqmForm.get('majorObjectives') as FormArray;
+  }
+
+  addProcedure(): void {
+    this.majorObjectives.push(
+      this.fb.control('', [Validators.required, Validators.minLength(3)])
+    );
+  }
+
   loadLeadershipData(): void {
     this.isLoading = true;
     // Simulate API call
     setTimeout(() => {
-      this.leadershipData = [
-        { 
-          name: 'John Doe', 
-          position: 'CEO', 
-          department: 'Executive', 
-          avatar: 'assets/images/avatar1.jpg' 
-        },
-        { 
-          name: 'Jane Smith', 
-          position: 'Quality Director', 
-          department: 'Quality Assurance', 
-          avatar: 'assets/images/avatar2.jpg' 
-        }
-      ];
+      this.leadershipData = [];
       this.isLoading = false;
     }, 1500);
   }
@@ -92,8 +91,10 @@ export class AQMComponent implements OnInit {
     if (this.aqmForm.valid) {
       const formData = new FormData();
       formData.append('qualityPolicy', this.aqmForm.value.qualityPolicy);
-      formData.append('majorObjectives', this.aqmForm.value.majorObjectives);
-      
+      this.majorObjectives.controls.forEach((control, index) => {
+        formData.append(`majorObjectives[${index}]`, control.value);
+      });
+
       if (this.orgChartFile) {
         formData.append('orgChart', this.orgChartFile);
       }
@@ -111,6 +112,10 @@ export class AQMComponent implements OnInit {
 
   resetForm(): void {
     this.aqmForm.reset();
+    // Reset FormArray to 1 control
+    this.majorObjectives.clear();
+    this.addProcedure();
+
     this.orgChartFile = null;
     this.orgChartPreview = null;
     this.aqmDocumentFile = null;

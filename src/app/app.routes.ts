@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './Component/login/login.component';
+import { DqmComponent } from './Component/dqm/dqm.component';
 
 
 export const routes: Routes = [
@@ -15,6 +16,10 @@ export const routes: Routes = [
     {
         path: 'aqm',
         loadComponent: () => import('./Component/aqm/aqm.component').then(m => m.AQMComponent)
+    },
+    {
+        path: 'dqm',
+        loadComponent: () => import('./Component/dqm/dqm.component').then(m => m.DqmComponent)
     },
 
 ];
