@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './Component/login/login.component';
-import { DqmComponent } from './Component/dqm/dqm.component';
 
 
 export const routes: Routes = [
@@ -21,5 +20,5 @@ export const routes: Routes = [
         path: 'dqm',
         loadComponent: () => import('./Component/dqm/dqm.component').then(m => m.DqmComponent)
     },
-
+   
 ];

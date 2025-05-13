@@ -35,21 +35,6 @@ body.with-navbar {
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, #3498db 0%, #4ca1af 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.header p {
-  font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.8);
-  margin: 0;
-}
-
 /* Form section adjustments */
 .form-section {
   background: linear-gradient(175deg, rgba(19, 32, 66, 0.192) 0%, rgba(176, 182, 190, 0.308) 100%);

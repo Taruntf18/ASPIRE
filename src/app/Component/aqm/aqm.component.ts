@@ -1,15 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+  FormArray,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { AqmService } from '../../service/aqm.service';
 
 @Component({
   selector: 'app-aqm',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
   templateUrl: './aqm.component.html',
-  styleUrls: ['./aqm.component.css']
+  styleUrls: ['./aqm.component.css'],
 })
+
 export class AQMComponent implements OnInit {
   aqmForm: FormGroup;
   leadershipData: any[] = [];
@@ -18,12 +26,17 @@ export class AQMComponent implements OnInit {
   aqmDocumentFile: File | null = null;
   isLoading = false;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+
+  constructor(private fb: FormBuilder, private http: HttpClient, private apiService: AqmService) {
     this.aqmForm = this.fb.group({
       qualityPolicy: ['', [Validators.required, Validators.minLength(50)]],
       majorObjectives: this.fb.array([
-        this.fb.control('', [Validators.required, Validators.minLength(3)])
-      ])
+        this.fb.group({
+          objective: ['', [Validators.required, Validators.minLength(3)]],
+        }),
+      ]),
+      orgChart: [null, Validators.required],  // Add required validator for image
+      aqmDocument: [null, Validators.required]  // Add required validator for PDF
     });
   }
 
@@ -35,9 +48,15 @@ export class AQMComponent implements OnInit {
     return this.aqmForm.get('majorObjectives') as FormArray;
   }
 
+  allObjectivesValid(): boolean {
+    return this.majorObjectives.controls.every((control) => control.valid);
+  }
+
   addProcedure(): void {
     this.majorObjectives.push(
-      this.fb.control('', [Validators.required, Validators.minLength(3)])
+      this.fb.group({
+        objective: ['', [Validators.required, Validators.minLength(3)]],
+      })
     );
   }
 
@@ -55,9 +74,11 @@ export class AQMComponent implements OnInit {
     if (file) {
       if (field === 'orgChart') {
         this.orgChartFile = file;
+        this.aqmForm.get('orgChart')?.setValue(file); // Update form control
         this.previewImage(file);
       } else if (field === 'aqmDocument') {
         this.aqmDocumentFile = file;
+        this.aqmForm.get('aqmDocument')?.setValue(file); // Update form control
       }
     }
   }
@@ -74,8 +95,10 @@ export class AQMComponent implements OnInit {
     if (field === 'orgChart') {
       this.orgChartFile = null;
       this.orgChartPreview = null;
+      this.aqmForm.get('orgChart')?.setValue(null); // Clear form control
     } else if (field === 'aqmDocument') {
       this.aqmDocumentFile = null;
+      this.aqmForm.get('aqmDocument')?.setValue(null); // Clear form control
     }
   }
 
@@ -88,13 +111,15 @@ export class AQMComponent implements OnInit {
   }
 
   onSubmit(): void {
+    // Proceed with form submission if valid
     if (this.aqmForm.valid) {
       const formData = new FormData();
       formData.append('qualityPolicy', this.aqmForm.value.qualityPolicy);
-      this.majorObjectives.controls.forEach((control, index) => {
-        formData.append(`majorObjectives[${index}]`, control.value);
+      
+      this.aqmForm.value.majorObjectives.forEach((obj: any, index: number) => {
+        formData.append(`majorObjectives[${index}]`, obj.objective);
       });
-
+  
       if (this.orgChartFile) {
         formData.append('orgChart', this.orgChartFile);
       }
@@ -102,22 +127,42 @@ export class AQMComponent implements OnInit {
         formData.append('aqmDocument', this.aqmDocumentFile);
       }
 
-      // In real app: this.http.post('/api/aqm', formData).subscribe(...)
-      console.log('Form submitted', formData);
-      alert('Form submitted successfully!');
+      
+
+
+      for (const [key, value] of (formData as any).entries()) {
+        console.log(`${key}:`, value instanceof File ? value.name : value);
+      }
+      
+
+      this.apiService.postAqmData(formData).subscribe({
+        next:(res) => {
+          console.log("aqm upload Successful", res)
+        },
+        error:(error) => console.log("aqm upload error", error)
+      })
+      
+      
+
     } else {
       this.aqmForm.markAllAsTouched();
+      console.log('Form is invalid - please check all required fields');
     }
   }
 
+
+
   resetForm(): void {
     this.aqmForm.reset();
-    // Reset FormArray to 1 control
     this.majorObjectives.clear();
     this.addProcedure();
-
+  
     this.orgChartFile = null;
     this.orgChartPreview = null;
     this.aqmDocumentFile = null;
+    
+    // Explicitly mark the file controls as untouched
+    this.aqmForm.get('orgChart')?.markAsUntouched();
+    this.aqmForm.get('aqmDocument')?.markAsUntouched();
   }
 }
