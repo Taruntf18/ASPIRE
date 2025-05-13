@@ -14,7 +14,7 @@
           <label for="division">Division</label>
           <select class="form-control" id="division" formControlName="division" required>
             <option value="" disabled selected>Select Division</option>
-            <option *ngFor="let division of divisions" [value]="division">{{ division }}</option>
+            <option *ngFor="let division of divisions" [value]="division">{{ division.divName }}</option>
           </select>
           <div *ngIf="dqmForm.get('division')?.invalid && dqmForm.get('division')?.touched" class="error-message">
             Division is required

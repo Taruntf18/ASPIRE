@@ -2,6 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { baseUrl } from '../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
+import { DqmService } from '../../service/dqm.service';
+
+
+
 
 interface ProcedureDocument {
   file: File | null;
@@ -25,22 +32,17 @@ interface Format {
 @Component({
   selector: 'app-dqm',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule], // Added FormsModule here
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    HttpClientModule // ✅ Add this line
+  ],
   templateUrl: './dqm.component.html',
   styleUrls: ['./dqm.component.css']
 })
 export class DqmComponent {
-  divisions = [
-    'Administration',
-    'Finance',
-    'Human Resources',
-    'Operations',
-    'IT',
-    'Marketing',
-    'Sales',
-    'Customer Support'
-  ];
-
+  divisions: any[] = [];
   dqmForm: FormGroup;
   procedureDocuments: ProcedureDocument[] = [];
   showSecondForm = false;
@@ -50,7 +52,7 @@ export class DqmComponent {
   currentProcedureIndex = 0;
   allProceduresCompleted = false;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private fb: FormBuilder, private router: Router, private dqm:DqmService) {
     this.dqmForm = this.fb.group({
       division: ['', Validators.required],
       mainObjectives: ['', Validators.required],
@@ -58,6 +60,22 @@ export class DqmComponent {
       procedures: this.fb.array([''], Validators.required)
     });
     this.procedureDocuments.push({ file: null });
+  }
+
+  ngOnInit(): void {
+    this.fetchDivisions();
+  }
+
+  fetchDivisions() {
+    this.dqm.getDivisions().subscribe({
+      next: (data) => {
+        this.divisions = data;
+        console.log('Divisions fetched:', this.divisions);
+      },
+      error: (err) => {
+        console.error('Error fetching divisions:', err);
+      }
+    });
   }
 
   get coreActivities() {

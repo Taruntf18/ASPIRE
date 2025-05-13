@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { SidenavbarComponent } from './Component/sidenavbar/sidenavbar.component';
+import { SidebarComponent } from './Component/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,SidenavbarComponent],
+  imports: [RouterOutlet,SidebarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
