@@ -1,111 +1,96 @@
 <div class="aqm-background">
   <div class="aqm-container">
     <header class="header">
-      <h1 style="color: #ffffff">AQM</h1>
+      <h1>AQM</h1>
       <p>APEX QUALITY MANUAL</p>
     </header>
 
     <form [formGroup]="aqmForm" (ngSubmit)="onSubmit()" class="aqm-form">
+
+      <!-- Combined Issue and Revision Number Section -->
+      <div class="form-section combined-numbers">
+        <div class="number-input-group">
+          <div class="form-group compact">
+            <h2>1. Issue Number</h2>
+            <input type="text" id="issueNumber" formControlName="issueNumber" placeholder="Enter Issue Number"
+              class="compact-input" />
+          </div>
+
+          <div class="form-group compact">
+            <h2>2. Revision Number</h2>
+            <input type="text" id="revisionNumber" formControlName="revisionNumber" placeholder="Enter Revision Number"
+              class="compact-input" />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section combined-numbers">
+        <div class="number-input-group">
+          <div class="form-group compact">
+            <h2>1. Issue Date</h2>
+            <input type="text" id="issueNumber" formControlName="issueNumber" placeholder="Enter Issue Number"
+              class="compact-input" />
+          </div>
+
+          <div class="form-group compact">
+            <h2>2. Revision Date</h2>
+            <input type="text" id="revisionNumber" formControlName="revisionNumber" placeholder="Enter Revision Number"
+              class="compact-input" />
+          </div>
+        </div>
+      </div>
+
+      
+
+
       <!-- Quality Policy -->
       <div class="form-section">
-        <h2>1. Quality Policy</h2>
+        <h2>3. Quality Policy</h2>
         <div class="form-group">
           <label for="qualityPolicy">Organization's Quality Policy</label>
-          <textarea
-            id="qualityPolicy"
-            formControlName="qualityPolicy"
-            placeholder="Enter your quality policy statement..."
-          ></textarea>
-          <div
-            *ngIf="
-              aqmForm.get('qualityPolicy')?.invalid &&
-              aqmForm.get('qualityPolicy')?.touched
-            "
-            class="error-message"
-          >
-            Quality policy is required (minimum 50 characters)
+          <textarea id="qualityPolicy" formControlName="qualityPolicy"
+            placeholder="Enter your quality policy statement..." maxlength="500" rows="6"></textarea>
+
+          <!-- Required error -->
+          <div *ngIf="aqmForm.get('qualityPolicy')?.errors?.['required'] && aqmForm.get('qualityPolicy')?.touched"
+            class="error-message">
+            Quality policy is required.
+          </div>
+
+          <!-- MinLength error -->
+          <div *ngIf="aqmForm.get('qualityPolicy')?.errors?.['minlength'] && aqmForm.get('qualityPolicy')?.touched"
+            class="error-message">
+            Minimum 50 characters required.
+          </div>
+
+          <!-- MaxLength error -->
+          <div *ngIf="aqmForm.get('qualityPolicy')?.errors?.['maxlength'] && aqmForm.get('qualityPolicy')?.touched"
+            class="error-message">
+            Maximum 500 characters allowed.
           </div>
         </div>
       </div>
 
-      <!-- Major Objectives -->
-      <div class="form-section">
-        <h2>2. Major Objectives</h2>
-        <div formArrayName="majorObjectives">
-          <div
-            class="form-group"
-            *ngFor="let obj of majorObjectives.controls; let i = index"
-            [formGroupName]="i"
-          >
-            <input 
-              type="text" 
-              placeholder="Enter a quality objective" 
-              class="single-line-input" 
-              formControlName="objective" 
-            />
-            <div 
-              *ngIf="obj.get('objective')?.invalid && (obj.get('objective')?.touched || obj.get('objective')?.dirty)"
-              class="error-message"
-            >
-              <span *ngIf="obj.get('objective')?.errors?.['required']">Objective is required</span>
-              <span *ngIf="obj.get('objective')?.errors?.['minlength']">Minimum 3 characters required</span>
-            </div>
-          </div>
-        </div>
 
-        
-        <button type="button" class="btn btn-add" (click)="addProcedure()">
-          + Add Quality Objective
-        </button>
-      </div>
+      
 
-      <!-- Leadership -->
-      <div class="form-section">
-        <h2>3. Leadership</h2>
-        <div class="leadership-container">
-          <div *ngIf="isLoading" class="loading">
-            Loading leadership data...
-          </div>
-          <div
-            *ngIf="!isLoading && leadershipData.length === 0"
-            class="no-data"
-          >
-            No leadership data available
-          </div>
-          <div *ngFor="let leader of leadershipData" class="leader-card">
-            <img [src]="leader.avatar" alt="Leader avatar" class="avatar" />
-            <div class="leader-info">
-              <h3>{{ leader.name }}</h3>
-              <p class="position">{{ leader.position }}</p>
-              <p class="department">{{ leader.department }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
+
+     
+
+     
 
       <!-- Organization Chart -->
       <div class="form-section">
-        <h2>4. Organization Chart</h2>
+        <h2>6. Organization Chart</h2>
         <div class="file-upload-group">
           <label>Upload Organization Chart (Image)</label>
-          <input
-            type="file"
-            id="orgChart"
-            (change)="onFileChange($event, 'orgChart')"
-            accept="image/*"
-            hidden
-            required
-          />
+          <input type="file" id="orgChart" (change)="onFileChange($event, 'orgChart')" accept="image/*" hidden
+            required />
           <label for="orgChart" class="file-upload-btn"> Choose File </label>
           <span class="file-name">{{
             orgChartFile?.name || "No file selected"
-          }}</span>
-          <button
-            *ngIf="orgChartFile"
-            type="button"
-            (click)="removeFile('orgChart')"
-            class="remove-btn"
-          >
+            }}</span>
+          <button *ngIf="orgChartFile" type="button" (click)="removeFile('orgChart')" class="remove-btn">
             Remove
           </button>
           <div *ngIf="orgChartPreview" class="image-preview">
@@ -119,30 +104,19 @@
 
       <!-- AQM Document -->
       <div class="form-section">
-        <h2>5. Upload AQM Document</h2>
+        <h2>7. Upload AQM Document</h2>
         <div class="file-upload-group">
-          <label>Upload AQM Document (PDF/DOC)</label>
-          <input
-            type="file"
-            id="aqmDocument"
-            (change)="onFileChange($event, 'aqmDocument')"
-            accept=".pdf,.doc,.docx"
-            hidden
-            required
-          />
+          <label>Upload AQM Document (pdf formate only )</label>
+          <input type="file" id="aqmDocument" (change)="onFileChange($event, 'aqmDocument')" accept=".pdf,.doc,.docx"
+            hidden required />
           <label for="aqmDocument" class="file-upload-btn"> Choose File </label>
           <span class="file-name">{{
             aqmDocumentFile?.name || "No file selected"
-          }}</span>
+            }}</span>
           <span *ngIf="aqmDocumentFile" class="file-size">
             {{ getFileSize(aqmDocumentFile.size) }}
           </span>
-          <button
-            *ngIf="aqmDocumentFile"
-            type="button"
-            (click)="removeFile('aqmDocument')"
-            class="remove-btn"
-          >
+          <button *ngIf="aqmDocumentFile" type="button" (click)="removeFile('aqmDocument')" class="remove-btn">
             Remove
           </button>
           <div *ngIf="aqmForm.get('aqmDocument')?.invalid && aqmForm.get('aqmDocument')?.touched" class="error-message">

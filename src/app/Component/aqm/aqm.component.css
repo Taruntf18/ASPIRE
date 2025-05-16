@@ -35,6 +35,21 @@ body.with-navbar {
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+.header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #3498db 0%, #4ca1af 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .header p {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+  }
+
 /* Form section adjustments */
 .form-section {
   background: linear-gradient(175deg, rgba(19, 32, 66, 0.192) 0%, rgba(176, 182, 190, 0.308) 100%);
@@ -98,7 +113,7 @@ body.with-navbar {
 .leadership-container {
   border: 1px dashed rgba(189, 195, 199, 0.5);
   border-radius: 6px;
-  padding: 1px;
+  padding: 25px;
   background: linear-gradient(
     135deg,
     rgba(249, 249, 249, 0.8) 0%,
@@ -337,3 +352,47 @@ body.with-navbar {
   background-color: #218838;
 }
 
+/* Combined Number Section Styles */
+.combined-numbers {
+  padding: 1rem;
+}
+
+.number-input-group {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.number-input-group .form-group.compact {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.number-input-group h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: linear-gradient(135deg, #3498db 0%, #4ca1af 100%);;
+}
+
+.compact-input {
+  width: 90%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.compact-input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.form-section:nth-child(2) h2 { /* Quality Policy */
+  counter-reset: section 3;
+}
+
+.form-section:nth-child(3) h2 { 
+  counter-reset: section 4;
+}

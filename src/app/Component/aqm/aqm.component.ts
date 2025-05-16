@@ -29,10 +29,12 @@ export class AQMComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private http: HttpClient, private apiService: AqmService) {
     this.aqmForm = this.fb.group({
-      qualityPolicy: ['', [Validators.required, Validators.minLength(50)]],
+      issueNumber:['', [Validators.required]],
+      revisionNumber:['',[Validators.required]],
+      qualityPolicy: ['', [Validators.required,  Validators.minLength(50),  Validators.maxLength(500)]],
       majorObjectives: this.fb.array([
         this.fb.group({
-          objective: ['', [Validators.required, Validators.minLength(3)]],
+          objective: ['', [Validators.required, Validators.maxLength(3)]],
         }),
       ]),
       orgChart: [null, Validators.required],  // Add required validator for image

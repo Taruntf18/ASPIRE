@@ -88,10 +88,10 @@
   text-decoration: none;
   font-size: 16px;
   transition: background 0.3s ease, transform 0.2s ease;
-  white-space: nowrap; /* Prevent text from wrapping */
-  overflow: hidden; /* Hide overflowed text */
-  text-overflow: ellipsis; /* Add ellipsis (...) for overflow text */
-  width: 100%; /* Ensure that text doesn't overflow the container */
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  width: 100%; 
 }
 
 /* Ensure submenu items do not wrap */
