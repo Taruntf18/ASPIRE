@@ -17,90 +17,82 @@ import { AqmService } from '../../service/aqm.service';
   templateUrl: './aqm.component.html',
   styleUrls: ['./aqm.component.css'],
 })
-
 export class AQMComponent implements OnInit {
   aqmForm: FormGroup;
-  leadershipData: any[] = [];
-  orgChartFile: File | null = null;
-  orgChartPreview: string | null = null;
   aqmDocumentFile: File | null = null;
+  existingDetailsDocFile: File | null = null;
+  changesSuggestedDocFile: File | null = null;
   isLoading = false;
 
-
-  constructor(private fb: FormBuilder, private http: HttpClient, private apiService: AqmService) {
+  constructor(
+    private fb: FormBuilder, 
+    private http: HttpClient, 
+    private apiService: AqmService
+  ) {
     this.aqmForm = this.fb.group({
-      issueNumber:['', [Validators.required]],
-      revisionNumber:['',[Validators.required]],
-      qualityPolicy: ['', [Validators.required,  Validators.minLength(50),  Validators.maxLength(500)]],
-      majorObjectives: this.fb.array([
-        this.fb.group({
-          objective: ['', [Validators.required, Validators.maxLength(3)]],
-        }),
-      ]),
-      orgChart: [null, Validators.required],  // Add required validator for image
-      aqmDocument: [null, Validators.required]  // Add required validator for PDF
+      from: ['MR Office', [Validators.required]],
+      to: ['Director', [Validators.required]],
+      issueNumber: ['', [Validators.required]],
+      issueDate: ['', [Validators.required]],
+      revisionNumber: ['', [Validators.required]],
+      revisionDate: ['', [Validators.required]],
+      existingDetails: [
+        '', 
+        [
+          Validators.required, 
+          Validators.minLength(50), 
+          Validators.maxLength(500)
+        ]
+      ],
+      changesSuggested: [
+        '', 
+        [
+          Validators.required, 
+          Validators.minLength(50), 
+          Validators.maxLength(500)
+        ]
+      ],
+      aqmDocument: [null, Validators.required]
     });
   }
 
-  ngOnInit(): void {
-    this.loadLeadershipData();
-  }
-
-  get majorObjectives(): FormArray {
-    return this.aqmForm.get('majorObjectives') as FormArray;
-  }
-
-  allObjectivesValid(): boolean {
-    return this.majorObjectives.controls.every((control) => control.valid);
-  }
-
-  addProcedure(): void {
-    this.majorObjectives.push(
-      this.fb.group({
-        objective: ['', [Validators.required, Validators.minLength(3)]],
-      })
-    );
-  }
-
-  loadLeadershipData(): void {
-    this.isLoading = true;
-    // Simulate API call
-    setTimeout(() => {
-      this.leadershipData = [];
-      this.isLoading = false;
-    }, 1500);
-  }
+  ngOnInit(): void {}
 
   onFileChange(event: any, field: string): void {
     const file = event.target.files[0];
     if (file) {
-      if (field === 'orgChart') {
-        this.orgChartFile = file;
-        this.aqmForm.get('orgChart')?.setValue(file); // Update form control
-        this.previewImage(file);
-      } else if (field === 'aqmDocument') {
-        this.aqmDocumentFile = file;
-        this.aqmForm.get('aqmDocument')?.setValue(file); // Update form control
+      switch (field) {
+        case 'aqmDocument':
+          this.aqmDocumentFile = file;
+          this.aqmForm.get('aqmDocument')?.setValue(file);
+          break;
+        case 'existingDetailsDoc':
+          this.existingDetailsDocFile = file;
+          break;
+        case 'changesSuggestedDoc':
+          this.changesSuggestedDocFile = file;
+          break;
       }
     }
   }
 
-  previewImage(file: File): void {
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.orgChartPreview = reader.result as string;
-    };
-    reader.readAsDataURL(file);
-  }
-
   removeFile(field: string): void {
-    if (field === 'orgChart') {
-      this.orgChartFile = null;
-      this.orgChartPreview = null;
-      this.aqmForm.get('orgChart')?.setValue(null); // Clear form control
-    } else if (field === 'aqmDocument') {
-      this.aqmDocumentFile = null;
-      this.aqmForm.get('aqmDocument')?.setValue(null); // Clear form control
+    switch (field) {
+      case 'aqmDocument':
+        this.aqmDocumentFile = null;
+        this.aqmForm.get('aqmDocument')?.setValue(null);
+        break;
+      case 'existingDetailsDoc':
+        this.existingDetailsDocFile = null;
+        break;
+      case 'changesSuggestedDoc':
+        this.changesSuggestedDocFile = null;
+        break;
+    }
+    // Reset the file input value
+    const fileInput = document.getElementById(field) as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
     }
   }
 
@@ -113,58 +105,65 @@ export class AQMComponent implements OnInit {
   }
 
   onSubmit(): void {
-    // Proceed with form submission if valid
     if (this.aqmForm.valid) {
       const formData = new FormData();
-      formData.append('qualityPolicy', this.aqmForm.value.qualityPolicy);
       
-      this.aqmForm.value.majorObjectives.forEach((obj: any, index: number) => {
-        formData.append(`majorObjectives[${index}]`, obj.objective);
+      // Append all form values
+      Object.keys(this.aqmForm.value).forEach(key => {
+        if (key !== 'aqmDocument') {
+          formData.append(key, this.aqmForm.value[key]);
+        }
       });
-  
-      if (this.orgChartFile) {
-        formData.append('orgChart', this.orgChartFile);
-      }
+
+      // Append files
       if (this.aqmDocumentFile) {
         formData.append('aqmDocument', this.aqmDocumentFile);
       }
+      if (this.existingDetailsDocFile) {
+        formData.append('existingDetailsDoc', this.existingDetailsDocFile);
+      }
+      if (this.changesSuggestedDocFile) {
+        formData.append('changesSuggestedDoc', this.changesSuggestedDocFile);
+      }
 
-      
-
-
+      // Log form data for debugging
       for (const [key, value] of (formData as any).entries()) {
         console.log(`${key}:`, value instanceof File ? value.name : value);
       }
-      
 
+      // Submit to API
       this.apiService.postAqmData(formData).subscribe({
-        next:(res) => {
-          console.log("aqm upload Successful", res)
+        next: (res) => {
+          console.log("AQM upload successful", res);
+          // Add any success handling here
         },
-        error:(error) => console.log("aqm upload error", error)
-      })
+        error: (error) => {
+          console.log("AQM upload error", error);
+          // Add error handling here
+        }
+      });
       
-      
-
     } else {
       this.aqmForm.markAllAsTouched();
       console.log('Form is invalid - please check all required fields');
     }
   }
 
-
-
   resetForm(): void {
     this.aqmForm.reset();
-    this.majorObjectives.clear();
-    this.addProcedure();
-  
-    this.orgChartFile = null;
-    this.orgChartPreview = null;
     this.aqmDocumentFile = null;
+    this.existingDetailsDocFile = null;
+    this.changesSuggestedDocFile = null;
     
-    // Explicitly mark the file controls as untouched
-    this.aqmForm.get('orgChart')?.markAsUntouched();
-    this.aqmForm.get('aqmDocument')?.markAsUntouched();
+    // Reset file inputs
+    ['aqmDocument', 'existingDetailsDoc', 'changesSuggestedDoc'].forEach(field => {
+      const fileInput = document.getElementById(field) as HTMLInputElement;
+      if (fileInput) fileInput.value = '';
+    });
+
+    // Mark all controls as untouched
+    Object.keys(this.aqmForm.controls).forEach(key => {
+      this.aqmForm.get(key)?.markAsUntouched();
+    });
   }
 }

@@ -12,6 +12,9 @@ export class DqmService {
   getDivisions(): Observable<any[]> {
     return this.http.get<any[]>(`${baseUrl}getDivisionalData`);
   }
+  postAqmData(data: any): Observable<any> {
+    return this.http.post<any>(`${baseUrl}aqmData`, data);
+  }
 }
 
 // import { HttpClient } from '@angular/common/http';

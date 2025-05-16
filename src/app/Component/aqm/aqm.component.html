@@ -7,6 +7,25 @@
 
     <form [formGroup]="aqmForm" (ngSubmit)="onSubmit()" class="aqm-form">
 
+      <!-- From/To Section -->
+      <div class="form-section from-to-section">
+        <div class="from-to-container">
+          <div class="from-group">
+            <h2>From</h2>
+            <div class="sender-info">
+              <p>MR Office</p>
+            </div>
+          </div>
+
+          <div class="to-group">
+            <h2>To</h2>
+            <div class="recipient-info">
+              <p>Director</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Combined Issue and Revision Number Section -->
       <div class="form-section combined-numbers">
         <div class="number-input-group">
@@ -17,8 +36,8 @@
           </div>
 
           <div class="form-group compact">
-            <h2>2. Revision Number</h2>
-            <input type="text" id="revisionNumber" formControlName="revisionNumber" placeholder="Enter Revision Number"
+            <h2> Issue Date</h2>
+            <input type="date" id="revisionNumber" formControlName="revisionNumber" placeholder="Enter Revision Number"
               class="compact-input" />
           </div>
         </div>
@@ -27,86 +46,86 @@
       <div class="form-section combined-numbers">
         <div class="number-input-group">
           <div class="form-group compact">
-            <h2>1. Issue Date</h2>
+            <h2>2. Revision Number</h2>
             <input type="text" id="issueNumber" formControlName="issueNumber" placeholder="Enter Issue Number"
               class="compact-input" />
           </div>
 
           <div class="form-group compact">
-            <h2>2. Revision Date</h2>
-            <input type="text" id="revisionNumber" formControlName="revisionNumber" placeholder="Enter Revision Number"
+            <h2>Revision Date</h2>
+            <input type="date" id="revisionNumber" formControlName="revisionNumber" placeholder="Enter Revision Number"
               class="compact-input" />
           </div>
         </div>
       </div>
 
-      
 
 
-      <!-- Quality Policy -->
+
+      <!-- Existing Details Section with Upload Button -->
       <div class="form-section">
-        <h2>3. Quality Policy</h2>
+        <h2>3. Existing Details</h2>
         <div class="form-group">
-          <label for="qualityPolicy">Organization's Quality Policy</label>
-          <textarea id="qualityPolicy" formControlName="qualityPolicy"
-            placeholder="Enter your quality policy statement..." maxlength="500" rows="6"></textarea>
+          <label for="existingDetails">Existing Details (if too big, please attach appropriate Document)</label>
+          <textarea id="existingDetails" formControlName="existingDetails"
+            placeholder="Enter your Existing Details..." maxlength="500" rows="6"></textarea>
 
-          <!-- Required error -->
-          <div *ngIf="aqmForm.get('qualityPolicy')?.errors?.['required'] && aqmForm.get('qualityPolicy')?.touched"
-            class="error-message">
-            Quality policy is required.
-          </div>
+          <!-- Error messages... -->
 
-          <!-- MinLength error -->
-          <div *ngIf="aqmForm.get('qualityPolicy')?.errors?.['minlength'] && aqmForm.get('qualityPolicy')?.touched"
-            class="error-message">
-            Minimum 50 characters required.
-          </div>
-
-          <!-- MaxLength error -->
-          <div *ngIf="aqmForm.get('qualityPolicy')?.errors?.['maxlength'] && aqmForm.get('qualityPolicy')?.touched"
-            class="error-message">
-            Maximum 500 characters allowed.
+          <!-- Upload Document Button for Existing Details -->
+          <div class="file-upload-group">
+            <input type="file" id="existingDetailsDoc" (change)="onFileChange($event, 'existingDetailsDoc')"
+              accept=".pdf,.doc,.docx" hidden />
+            <label for="existingDetailsDoc" class="file-upload-btn">Upload Supporting Document</label>
+            <span class="file-name">
+              {{ existingDetailsDocFile?.name || "No file selected" }}
+            </span>
+            <span *ngIf="existingDetailsDocFile" class="file-size">
+              {{ getFileSize(existingDetailsDocFile.size) }}
+            </span>
+            <button *ngIf="existingDetailsDocFile" type="button" (click)="removeFile('existingDetailsDoc')"
+              class="remove-btn">
+              Remove
+            </button>
           </div>
         </div>
       </div>
 
-
-      
-
-
-     
-
-     
-
-      <!-- Organization Chart -->
+      <!-- Changes Suggested Section with Upload Button -->
       <div class="form-section">
-        <h2>6. Organization Chart</h2>
-        <div class="file-upload-group">
-          <label>Upload Organization Chart (Image)</label>
-          <input type="file" id="orgChart" (change)="onFileChange($event, 'orgChart')" accept="image/*" hidden
-            required />
-          <label for="orgChart" class="file-upload-btn"> Choose File </label>
-          <span class="file-name">{{
-            orgChartFile?.name || "No file selected"
-            }}</span>
-          <button *ngIf="orgChartFile" type="button" (click)="removeFile('orgChart')" class="remove-btn">
-            Remove
-          </button>
-          <div *ngIf="orgChartPreview" class="image-preview">
-            <img [src]="orgChartPreview" alt="Organization chart preview" />
-          </div>
-          <div *ngIf="aqmForm.get('orgChart')?.invalid && aqmForm.get('orgChart')?.touched" class="error-message">
-            Organization chart is required
+        <h2>4. Changes Suggested</h2>
+        <div class="form-group">
+          <label for="changesSuggested">Changes Suggested (if too big, please attach appropriate Document)</label>
+          <textarea id="changesSuggested" formControlName="changesSuggested" placeholder="Enter your Changes Suggested"
+            maxlength="500" rows="6"></textarea>
+
+          <!-- Error messages... -->
+
+          <!-- Upload Document Button for Changes Suggested -->
+          <div class="file-upload-group">
+            <input type="file" id="changesSuggestedDoc" (change)="onFileChange($event, 'changesSuggestedDoc')"
+              accept=".pdf,.doc,.docx" hidden />
+            <label for="changesSuggestedDoc" class="file-upload-btn">Upload Supporting Document</label>
+            <span class="file-name">
+              {{ changesSuggestedDocFile?.name || "No file selected" }}
+            </span>
+            <span *ngIf="changesSuggestedDocFile" class="file-size">
+              {{ getFileSize(changesSuggestedDocFile.size) }}
+            </span>
+            <button *ngIf="changesSuggestedDocFile" type="button" (click)="removeFile('changesSuggestedDoc')"
+              class="remove-btn">
+              Remove
+            </button>
           </div>
         </div>
       </div>
+
 
       <!-- AQM Document -->
       <div class="form-section">
-        <h2>7. Upload AQM Document</h2>
+        <h2>7. Upload Unsigned AQM Document</h2>
         <div class="file-upload-group">
-          <label>Upload AQM Document (pdf formate only )</label>
+          <label>Upload Unsigned AQM Document (pdf formate only)</label>
           <input type="file" id="aqmDocument" (change)="onFileChange($event, 'aqmDocument')" accept=".pdf,.doc,.docx"
             hidden required />
           <label for="aqmDocument" class="file-upload-btn"> Choose File </label>
@@ -120,7 +139,7 @@
             Remove
           </button>
           <div *ngIf="aqmForm.get('aqmDocument')?.invalid && aqmForm.get('aqmDocument')?.touched" class="error-message">
-            AQM document is required
+            Unsigned AQM document is required
           </div>
         </div>
       </div>

@@ -15,47 +15,88 @@
   <nav class="sidebar-nav">
     <!-- AQM Section -->
     <a class="nav-item" (click)="toggleSidebar()">
-      <i class="icon">🏠</i>
+      <i class="icon">??</i>
       <span>AQM</span>
     </a>
     <div class="submenu">
-      <a class="nav-item" routerLink="/aqm" routerLinkActive="active" (click)="toggleSidebar()">
-        <span>Creation of AQM</span>
-      </a>
+      
       <a class="nav-item" routerLink="/aqm/amendment-request" routerLinkActive="active" (click)="toggleSidebar()">
-        <span>Request of AQM Amendment</span>
+        <span>Request of AQM Amendment - MR Office</span>
       </a>
-      <a class="nav-item" routerLink="/aqm/amendment-approved" routerLinkActive="active" (click)="toggleSidebar()">
-        <span>Approved of AQM Amendment</span>
+      <a class="nav-item" routerLink="/aqm/amendment-pending" routerLinkActive="active" (click)="toggleSidebar()">
+        <span>AQM - Pending List for Approval - MR</span>
+      </a>
+      <a class="nav-item" routerLink="aqm/popupdetails" routerLinkActive="active" (click)="toggleSidebar()">
+        <span>AQM - Request for Clarification - MR Office</span>
+      </a>
+      <a class="nav-item" routerLink="/aqm/amendment-pending" routerLinkActive="active" (click)="toggleSidebar()">
+        <span>AQM - Pending List for Uploading Signed Copy of AQM & Amendenment Request - MR Office</span>
       </a>
       <a class="nav-item" routerLink="/aqm/amendment-status" routerLinkActive="active" (click)="toggleSidebar()">
         <span>Status of AQM Amendment</span>
-      </a>
-      <a class="nav-item" routerLink="/aqm/amendment-pending" routerLinkActive="active" (click)="toggleSidebar()">
-        <span>Pending of AQM Amendment Request</span>
       </a>
     </div>
 
     <!-- DQM Section -->
     <a class="nav-item" (click)="toggleSidebar()">
-      <i class="icon">📊</i>
+      <i class="icon">??</i>
       <span>DQM</span>
     </a>
     <div class="submenu">
-      <a class="nav-item" routerLink="/dqm" routerLinkActive="active" (click)="toggleSidebar()">
-        <span>Creation of DQM</span>
-      </a>
       <a class="nav-item" routerLink="/dqm/amendment-request" routerLinkActive="active" (click)="toggleSidebar()">
-        <span>Request of DQM Amendment</span>
+        <span>Request of DQM Amendment - DR</span>
       </a>
       <a class="nav-item" routerLink="/dqm/amendment-approved" routerLinkActive="active" (click)="toggleSidebar()">
-        <span>Approved of DQM Amendment</span>
+       <span>DQM - Pending List for Approval - MR Office</span>
+      </a>
+      <a class="nav-item" routerLink="/dqm/amendment-pending" routerLinkActive="active" (click)="toggleSidebar()">
+        <span>DQM - Request for Clarification - DR</span>
+      </a>
+      <a class="nav-item" routerLink="/dqm/amendment-pending" routerLinkActive="active" (click)="toggleSidebar()">
+        <span>DQM - Pending List for Uploading Signed Copy - DR</span>
+      </a>
+      <a class="nav-item" routerLink="/dqm/amendment-status" routerLinkActive="active" (click)="toggleSidebar()">
+        <span>DQM - Pending List for Uploading Signed Copy of DQM & Amendenment Request - MR Office</span>
       </a>
       <a class="nav-item" routerLink="/dqm/amendment-status" routerLinkActive="active" (click)="toggleSidebar()">
         <span>Status of DQM Amendment</span>
       </a>
-      <a class="nav-item" routerLink="/dqm/amendment-pending" routerLinkActive="active" (click)="toggleSidebar()">
-        <span>Pending of DQM Amendment Request</span>
+    </div>
+
+    <a class="nav-item" (click)="toggleSidebar()">
+      <i class="icon">??</i>
+      <span>Role Change - MR Office</span>
+    </a>
+    <div class="submenu">
+      <a class="nav-item" routerLink="/dqm/amendment-request" routerLinkActive="active" (click)="toggleSidebar()">
+        <span>Assign / Remove DR</span>
+      </a>
+    </div>
+
+
+    
+
+    <a class="nav-item" (click)="toggleSidebar()">
+      <i class="icon">??</i>
+      <span>Role Change - MR</span>
+    </a>
+    <div class="submenu">
+      <a class="nav-item" routerLink="/dqm/amendment-request" routerLinkActive="active" (click)="toggleSidebar()">
+        <span>Assign / Remove MR Office</span>
+      </a>
+    </div>
+
+
+
+
+
+    <a class="nav-item" (click)="toggleSidebar()">
+      <i class="icon">??</i>
+      <span>Role Change - Admin</span>
+    </a>
+    <div class="submenu">     
+      <a class="nav-item" routerLink="/dqm/amendment-request" routerLinkActive="active" (click)="toggleSidebar()">
+        <span>Assign / Remove MR </span>
       </a>
     </div>
   </nav>
