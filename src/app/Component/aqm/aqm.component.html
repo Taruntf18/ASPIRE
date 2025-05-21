@@ -68,14 +68,14 @@
         <div class="form-group">
           <label for="existingDetails">Existing Details (if too big, please attach appropriate Document)</label>
           <textarea id="existingDetails" formControlName="existingDetails"
-            placeholder="Enter your Existing Details..." maxlength="500" rows="6"></textarea>
+            placeholder="Enter your quality policy statement..." maxlength="500" rows="6"></textarea>
 
           <!-- Error messages... -->
 
           <!-- Upload Document Button for Existing Details -->
           <div class="file-upload-group">
             <input type="file" id="existingDetailsDoc" (change)="onFileChange($event, 'existingDetailsDoc')"
-              accept=".pdf,.doc,.docx" hidden />
+              accept=".pdf" hidden />
             <label for="existingDetailsDoc" class="file-upload-btn">Upload Supporting Document</label>
             <span class="file-name">
               {{ existingDetailsDocFile?.name || "No file selected" }}
@@ -104,7 +104,7 @@
           <!-- Upload Document Button for Changes Suggested -->
           <div class="file-upload-group">
             <input type="file" id="changesSuggestedDoc" (change)="onFileChange($event, 'changesSuggestedDoc')"
-              accept=".pdf,.doc,.docx" hidden />
+              accept=".pdf" hidden />
             <label for="changesSuggestedDoc" class="file-upload-btn">Upload Supporting Document</label>
             <span class="file-name">
               {{ changesSuggestedDocFile?.name || "No file selected" }}
@@ -126,7 +126,7 @@
         <h2>7. Upload Unsigned AQM Document</h2>
         <div class="file-upload-group">
           <label>Upload Unsigned AQM Document (pdf formate only)</label>
-          <input type="file" id="aqmDocument" (change)="onFileChange($event, 'aqmDocument')" accept=".pdf,.doc,.docx"
+          <input type="file" id="aqmDocument" (change)="onFileChange($event, 'aqmDocument')" accept=".pdf"
             hidden required />
           <label for="aqmDocument" class="file-upload-btn"> Choose File </label>
           <span class="file-name">{{

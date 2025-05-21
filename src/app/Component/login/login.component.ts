@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { baseUrl } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,7 @@ export class LoginComponent {
   isLoading = false;
   errorMessage = '';
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router) {
     this.loginForm = this.fb.group({
       userId: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')]],
       password: ['', [Validators.required]]
@@ -31,7 +32,6 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       console.log('Submitted form data:', this.loginForm.value);
       this.isLoading = true;
-
       this.http.post(`${baseUrl}/login`, this.loginForm.value).subscribe({
         next: (res) => {
           console.log('Login successful', res);

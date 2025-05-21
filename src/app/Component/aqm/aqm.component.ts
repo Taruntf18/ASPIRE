@@ -17,7 +17,7 @@ import { AqmService } from '../../service/aqm.service';
   templateUrl: './aqm.component.html',
   styleUrls: ['./aqm.component.css'],
 })
-export class AQMComponent implements OnInit {
+export class AQMComponent implements OnInit{
   aqmForm: FormGroup;
   aqmDocumentFile: File | null = null;
   existingDetailsDocFile: File | null = null;
@@ -99,7 +99,7 @@ export class AQMComponent implements OnInit {
   getFileSize(bytes: number): string {
     if (!bytes) return '0 Bytes';
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = ['Bytes', 'KB', 'MB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
@@ -108,14 +108,14 @@ export class AQMComponent implements OnInit {
     if (this.aqmForm.valid) {
       const formData = new FormData();
       
-      // Append all form values
+      
       Object.keys(this.aqmForm.value).forEach(key => {
         if (key !== 'aqmDocument') {
           formData.append(key, this.aqmForm.value[key]);
         }
       });
 
-      // Append files
+      
       if (this.aqmDocumentFile) {
         formData.append('aqmDocument', this.aqmDocumentFile);
       }
@@ -126,20 +126,20 @@ export class AQMComponent implements OnInit {
         formData.append('changesSuggestedDoc', this.changesSuggestedDocFile);
       }
 
-      // Log form data for debugging
+      
       for (const [key, value] of (formData as any).entries()) {
         console.log(`${key}:`, value instanceof File ? value.name : value);
       }
 
-      // Submit to API
+      
       this.apiService.postAqmData(formData).subscribe({
         next: (res) => {
           console.log("AQM upload successful", res);
-          // Add any success handling here
+          
         },
         error: (error) => {
           console.log("AQM upload error", error);
-          // Add error handling here
+          
         }
       });
       
@@ -155,13 +155,13 @@ export class AQMComponent implements OnInit {
     this.existingDetailsDocFile = null;
     this.changesSuggestedDocFile = null;
     
-    // Reset file inputs
+    
     ['aqmDocument', 'existingDetailsDoc', 'changesSuggestedDoc'].forEach(field => {
       const fileInput = document.getElementById(field) as HTMLInputElement;
       if (fileInput) fileInput.value = '';
     });
 
-    // Mark all controls as untouched
+    
     Object.keys(this.aqmForm.controls).forEach(key => {
       this.aqmForm.get(key)?.markAsUntouched();
     });

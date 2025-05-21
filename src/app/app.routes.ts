@@ -1,33 +1,25 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './Component/login/login.component';
-
 
 export const routes: Routes = [
 
     {
         path: '',
-        component: LoginComponent,
+        loadComponent:() => import('./Component/login/login.component').then(m => m.LoginComponent)
     },
     {
-        path: 'login',
-        loadComponent: () => import('./Component/login/login.component').then(m => m.LoginComponent)
-    },
-    {
-        path: 'aqm/amendment-request',
+        path: 'aqm-amendment-request',
         loadComponent: () => import('./Component/aqm/aqm.component').then(m => m.AQMComponent)
     },
     {
-        path: 'aqm/popupdetails',
-        loadComponent: () => import('./Component/popupdetails/popupdetails.component').then(m => m.PopupdetailsComponent)
+        path: 'aqm-amendment-pending',
+        loadComponent: () => import('./Component/aqm-pending-list-for-approval/aqm-pending-list-for-approval.component').then(m => m.AQMPendingListForApprovalComponent)
     },
     {
-        path: 'aqm/amendment-pending',
-        loadComponent: () => import('./Component/mr-pending-list-for-approval/mr-pending-list-for-approval.component').then(m => m.MRPendingListForApprovalComponent)
+        path: 'aqm-amendment-clarification',
+        loadComponent: () => import('./Component/aqm-request-for-clarification/aqm-request-for-clarification.component').then(m => m.AqmRequestForClarificationComponent)
     },
     {
-        path: 'dqm/amendment-request',
-        loadComponent: () => import('./Component/dqm/dqm.component').then(m => m.DqmComponent)
+        path: 'aqm-upload-document',
+        loadComponent: () => import('./Component/aqm-upload-signed-copy/aqm-upload-signed-copy.component').then(m => m.AqmUploadSignedCopyComponent)
     },
-    
-   
 ];
