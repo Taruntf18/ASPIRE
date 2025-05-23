@@ -5,29 +5,30 @@
 }
 
 body {
-  background-color: #080710; /* Deep blackish blue */
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-  
-}
-
-.main_container{
   background-color: #080710;
-  display: flex;
- justify-content: center;
- align-items: center;
+  height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.login-background {
+  background-color: #080710;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
 
+/* Background Circles */
 .background {
   width: 430px;
-
   height: 520px;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  z-index: 0;
 }
 
 .shape {
@@ -49,8 +50,8 @@ body {
   bottom: -80px;
 }
 
+/* Glassmorphic Form */
 form {
-  height: auto;
   width: 400px;
   background-color: rgba(255, 255, 255, 0.13);
   position: absolute;
@@ -62,13 +63,16 @@ form {
   border: 2px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
   padding: 50px 35px;
+  z-index: 1;
 }
 
-form * {
+/* Form Text */
+.heading h3,
+label,
+.subtitle,
+input,
+input::placeholder {
   color: #ffffff;
-  letter-spacing: 0.5px;
-  border: none;
-  outline: none;
 }
 
 .heading {
@@ -93,8 +97,7 @@ form * {
   text-align: center;
   font-size: 14px;
   font-weight: 300;
-  margin-top: 10px;
-  margin-bottom: 20px;
+  margin: 10px 0 20px;
 }
 
 label {
@@ -113,12 +116,22 @@ input {
   margin-top: 8px;
   font-size: 14px;
   font-weight: 300;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  transition: background-color 0.2s, border 0.2s;
+}
+
+input:focus {
+  border: 1px solid #23a2f6;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 ::placeholder {
   color: #e5e5e5;
 }
 
+/* Button */
 button {
   margin-top: 30px;
   width: 100%;
@@ -129,19 +142,58 @@ button {
   font-weight: 600;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  border: none;
+  outline: none;
+}
+
+button:hover:enabled {
+  background-color: #f0f0f0;
 }
 
 button:disabled {
   background-color: #ffffff;
-  /* cursor: not-allowed; */
-  color: black;
+  color: #888888;
+  cursor: not-allowed;
 }
-.login-background {
-  background-color: #080710;
-  height: 110vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0px;
-  top: 0px;
+
+/* Error styles */
+input.invalid {
+  border: 1px solid #ff4b4b;
+  background-color: rgba(255, 75, 75, 0.1);
+}
+
+.error-message {
+  color: #ff4b4b;
+  font-size: 14px;
+  margin-top: 15px;
+  text-align: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media screen and (max-width: 480px) {
+  form {
+    width: 90%;
+    padding: 40px 25px;
+  }
+
+  .heading h3 {
+    font-size: 26px;
+  }
+
+  .subtitle {
+    font-size: 12px;
+  }
 }

@@ -37,7 +37,7 @@
 
           <div class="form-group compact">
             <h2> Issue Date</h2>
-            <input type="date" id="revisionNumber" formControlName="revisionNumber" placeholder="Enter Revision Number"
+            <input type="date" id="revisionNumber" formControlName="issueDate" placeholder="Enter Revision Number"
               class="compact-input" />
           </div>
         </div>
@@ -47,13 +47,13 @@
         <div class="number-input-group">
           <div class="form-group compact">
             <h2>2. Revision Number</h2>
-            <input type="text" id="issueNumber" formControlName="issueNumber" placeholder="Enter Issue Number"
+            <input type="text" id="issueNumber" formControlName="revisionNumber" placeholder="Enter Issue Number"
               class="compact-input" />
           </div>
 
           <div class="form-group compact">
             <h2>Revision Date</h2>
-            <input type="date" id="revisionNumber" formControlName="revisionNumber" placeholder="Enter Revision Number"
+            <input type="date" id="revisionNumber" formControlName="revisionDate" placeholder="Enter Revision Number"
               class="compact-input" />
           </div>
         </div>
@@ -75,7 +75,7 @@
           <!-- Upload Document Button for Existing Details -->
           <div class="file-upload-group">
             <input type="file" id="existingDetailsDoc" (change)="onFileChange($event, 'existingDetailsDoc')"
-              accept=".pdf" hidden />
+              accept=".pdf,.doc,.docx" hidden />
             <label for="existingDetailsDoc" class="file-upload-btn">Upload Supporting Document</label>
             <span class="file-name">
               {{ existingDetailsDocFile?.name || "No file selected" }}
@@ -104,7 +104,7 @@
           <!-- Upload Document Button for Changes Suggested -->
           <div class="file-upload-group">
             <input type="file" id="changesSuggestedDoc" (change)="onFileChange($event, 'changesSuggestedDoc')"
-              accept=".pdf" hidden />
+              accept=".pdf,.doc,.docx" hidden />
             <label for="changesSuggestedDoc" class="file-upload-btn">Upload Supporting Document</label>
             <span class="file-name">
               {{ changesSuggestedDocFile?.name || "No file selected" }}
@@ -126,7 +126,7 @@
         <h2>7. Upload Unsigned AQM Document</h2>
         <div class="file-upload-group">
           <label>Upload Unsigned AQM Document (pdf formate only)</label>
-          <input type="file" id="aqmDocument" (change)="onFileChange($event, 'aqmDocument')" accept=".pdf"
+          <input type="file" id="aqmDocument" (change)="onFileChange($event, 'aqmDocument')" accept=".pdf,.doc,.docx"
             hidden required />
           <label for="aqmDocument" class="file-upload-btn"> Choose File </label>
           <span class="file-name">{{
@@ -146,7 +146,7 @@
 
       <!-- Form Actions -->
       <div class="form-actions">
-        <button type="submit" [disabled]="aqmForm.invalid" class="submit-btn">
+        <button type="submit" [disabled]="!aqmForm.valid"  class="submit-btn">
           Submit AQM Data
         </button>
         <button type="button" (click)="resetForm()" class="reset-btn">

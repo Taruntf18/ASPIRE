@@ -1,4 +1,7 @@
-<app-sidebar/>
+<!-- app.component.html -->
+@if(userLoggedin()) {
+  <app-sidebar></app-sidebar>
+}
 <main>
-    <router-outlet />
+  <router-outlet></router-outlet>
 </main>
