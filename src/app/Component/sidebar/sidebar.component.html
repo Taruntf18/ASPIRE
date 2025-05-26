@@ -7,178 +7,188 @@
   </button>
 
   <!-- Sidebar Content -->
-  <!-- Sidebar Content -->
   <div class="sidebar" [class.open]="isOpen">
     <div class="sidebar-header">
       <h3>ASPIRE</h3>
     </div>
+    
     <nav class="sidebar-nav">
       <!-- AQM Section -->
-      <a class="nav-item" (click)="toggleSidebar()">
-        <i class="icon">??</i>
-        <span>AQM</span>
-      </a>
-      <div class="submenu">
-        @if(MR_OFFICE_RolePresent()){
-        <a
-          class="nav-item"
-          routerLink="/aqm-amendment-request"
-          routerLinkActive="active"
-          (click)="toggleSidebar()"
-        >
-          <span>Request of AQM Amendment - MR Office</span>
+      <div class="nav-section">
+        <a class="nav-item section-header" (click)="toggleSidebar()">
+          <i class="icon">AQM</i>
+          
+          <i class="dropdown-icon">▼</i>
         </a>
-        } @if(MR_RolePresent()){
-        <a
-          class="nav-item"
-          routerLink="/aqm-amendment-pending"
-          routerLinkActive="active"
-          (click)="toggleSidebar()"
-        >
-          <span>AQM - Pending List for Approval - MR</span>
-        </a>
-        } @if(MR_OFFICE_RolePresent()){
-        <a
-          class="nav-item"
-          routerLink="/aqm-amendment-clarification"
-          routerLinkActive="active"
-          (click)="toggleSidebar()"
-        >
-          <span>AQM - Request for Clarification - MR Office</span>
-        </a>
-        <a
-          class="nav-item"
-          routerLink="/aqm-upload-document"
-          routerLinkActive="active"
-          (click)="toggleSidebar()"
-        >
-          <span
-            >AQM - Pending List for Uploading Signed Copy of AQM & Amendenment
-            Request - MR Office</span
+        <div class="submenu">
+          @if(MR_OFFICE_RolePresent()){
+          <a
+            class="nav-item"
+            routerLink="/aqm-amendment-request"
+            routerLinkActive="active"
+            (click)="toggleSidebar()"
           >
-        </a>
-        }
-        <a
-          class="nav-item"
-          routerLink="/aqm/amendment-status"
-          routerLinkActive="active"
-          (click)="toggleSidebar()"
-        >
-          <span>Status of AQM Amendment</span>
-        </a>
+            <span>Request of AQM Amendment - MR Office</span>
+          </a>
+          } @if(MR_RolePresent()){
+          <a
+            class="nav-item"
+            routerLink="/aqm-amendment-pending"
+            routerLinkActive="active"
+            (click)="toggleSidebar()"
+          >
+            <span>Pending List for Approval - MR</span>
+          </a>
+          } @if(MR_OFFICE_RolePresent()){
+          <a
+            class="nav-item"
+            routerLink="/aqm-amendment-clarification"
+            routerLinkActive="active"
+            (click)="toggleSidebar()"
+          >
+            <span>Request for Clarification - MR Office</span>
+          </a>
+          <a
+            class="nav-item"
+            routerLink="/aqm-upload-document"
+            routerLinkActive="active"
+            (click)="toggleSidebar()"
+          >
+            <span>AQM - Pending List for Uploading Signed Copy</span>
+          </a>
+          }
+          <a
+            class="nav-item"
+            routerLink="/aqm/amendment-status"
+            routerLinkActive="active"
+            (click)="toggleSidebar()"
+          >
+            <span>Status of AQM Amendment</span>
+          </a>
+        </div>
       </div>
 
       <!-- DQM Section -->
-      <a class="nav-item" (click)="toggleSidebar()">
-        <i class="icon">??</i>
-        <span>DQM</span>
-      </a>
-      <div class="submenu">
-        @if(DR_RolePresent()){
-        <a
-          class="nav-item"
-          routerLink="/dqm/amendment-request"
-          routerLinkActive="active"
-          (click)="toggleSidebar()"
-        >
-          <span>Request of DQM Amendment - DR</span>
+      <div class="nav-section">
+        <a class="nav-item section-header" (click)="toggleSidebar()">
+          <i class="icon">DQM</i>
+          <i class="dropdown-icon">▼</i>
         </a>
-        } @if(MR_OFFICE_RolePresent()){
-        <a
-          class="nav-item"
-          routerLink="/dqm/amendment-approved"
-          routerLinkActive="active"
-          (click)="toggleSidebar()"
-        >
-          <span>DQM - Pending List for Approval - MR Office</span>
-        </a>
-        } @if(DR_RolePresent()){
-        <a
-          class="nav-item"
-          routerLink="/dqm/amendment-pending"
-          routerLinkActive="active"
-          (click)="toggleSidebar()"
-        >
-          <span>DQM - Request for Clarification - DR</span>
-        </a>
-        <a
-          class="nav-item"
-          routerLink="/dqm/amendment-pending"
-          routerLinkActive="active"
-          (click)="toggleSidebar()"
-        >
-          <span>DQM - Pending List for Uploading Signed Copy - DR</span>
-        </a>
-        } @if(MR_OFFICE_RolePresent()){
-        <a
-          class="nav-item"
-          routerLink="/dqm/amendment-status"
-          routerLinkActive="active"
-          (click)="toggleSidebar()"
-        >
-          <span
-            >DQM - Pending List for Uploading Signed Copy of DQM & Amendenment
-            Request - MR Office</span
+        <div class="submenu">
+          @if(DR_RolePresent()){
+          <a
+            class="nav-item"
+            routerLink="/dqm/amendment-request"
+            routerLinkActive="active"
+            (click)="toggleSidebar()"
           >
-        </a>
-        }
-        <a
-          class="nav-item"
-          routerLink="/dqm/amendment-status"
-          routerLinkActive="active"
-          (click)="toggleSidebar()"
-        >
-          <span>Status of DQM Amendment</span>
-        </a>
-      </div>
-      <a class="nav-item" (click)="toggleSidebar()">
-        <i class="icon">??</i>
-        <span>Role Change - MR Office</span>
-      </a>
-      <div class="submenu">
-        <a
-          class="nav-item"
-          routerLink="/dqm/amendment-request"
-          routerLinkActive="active"
-          (click)="toggleSidebar()"
-        >
-          <span>Assign / Remove DR</span>
-        </a>
+            <span>Request of DQM Amendment - DR</span>
+          </a>
+          } @if(MR_OFFICE_RolePresent()){
+          <a
+            class="nav-item"
+            routerLink="/dqm/amendment-approved"
+            routerLinkActive="active"
+            (click)="toggleSidebar()"
+          >
+            <span>DQM - Pending List for Approval - MR Office</span>
+          </a>
+          } @if(DR_RolePresent()){
+          <a
+            class="nav-item"
+            routerLink="/dqm/amendment-pending"
+            routerLinkActive="active"
+            (click)="toggleSidebar()"
+          >
+            <span>DQM - Request for Clarification - DR</span>
+          </a>
+          <a
+            class="nav-item"
+            routerLink="/dqm/amendment-pending"
+            routerLinkActive="active"
+            (click)="toggleSidebar()"
+          >
+            <span>DQM - Pending List for Uploading Signed Copy - DR</span>
+          </a>
+          } @if(MR_OFFICE_RolePresent()){
+          <a
+            class="nav-item"
+            routerLink="/dqm/amendment-status"
+            routerLinkActive="active"
+            (click)="toggleSidebar()"
+          >
+            <span>DQM - Pending List for Uploading Signed Copy</span>
+          </a>
+          }
+          <a
+            class="nav-item"
+            routerLink="/dqm/amendment-status"
+            routerLinkActive="active"
+            (click)="toggleSidebar()"
+          >
+            <span>Status of DQM Amendment</span>
+          </a>
+        </div>
       </div>
 
-      <a class="nav-item" (click)="toggleSidebar()">
-        <i class="icon">??</i>
-        <span>Role Change - MR</span>
-      </a>
-      <div class="submenu">
-        <a
-          class="nav-item"
-          routerLink="/dqm/amendment-request"
-          routerLinkActive="active"
-          (click)="toggleSidebar()"
-        >
-          <span>Assign / Remove MR Office</span>
+      <!-- Role Change Sections -->
+      <div class="nav-section">
+        <a class="nav-item section-header" (click)="toggleSidebar()">
+          <i class="icon">👥</i>
+          <span>Role Management</span>
+          <i class="dropdown-icon">▼</i>
         </a>
-      </div>
-
-      <a class="nav-item" (click)="toggleSidebar()">
-        <i class="icon">??</i>
-        <span>Role Change - Admin</span>
-      </a>
-      <div class="submenu">
-        <a
-          class="nav-item"
-          routerLink="/dqm/amendment-request"
-          routerLinkActive="active"
-          (click)="toggleSidebar()"
-        >
-          <span>Assign / Remove MR </span>
-        </a>
-      </div>
-      <div>
-        <button (click)="handgleLogout()">log out</button>
+        <div class="submenu">
+          @if(MR_OFFICE_RolePresent()){
+          <a
+            class="nav-item"
+            routerLink="/role-change-mr-office"
+            routerLinkActive="active"
+            (click)="toggleSidebar()"
+          >
+            <span>Assign/Remove DR</span>
+          </a>
+          }
+          @if(MR_RolePresent()){
+          <a
+            class="nav-item"
+            routerLink="/role-change-mr"
+            routerLinkActive="active"
+            (click)="toggleSidebar()"
+          >
+            <span>Assign/Remove MR Office</span>
+          </a>
+          }
+          @if(isAdmin()){
+          <a
+            class="nav-item"
+            routerLink="/role-change-admin"
+            routerLinkActive="active"
+            (click)="toggleSidebar()"
+          >
+            <span>Assign/Remove MR</span>
+          </a>
+          }
+        </div>
       </div>
     </nav>
+
+    <!-- Employee Details Section -->
+    <div class="employee-section">
+      <div class="employee-details">
+        <div class="employee-avatar">
+          <img src="assets/default-avatar.png" alt="Employee Avatar">
+        </div>
+        <div class="employee-info">
+          <div class="employee-name">{{employeeName}}</div>
+          <div class="employee-role">{{employeeRole}}</div>
+        </div>
+      </div>
+      <button class="logout-btn" (click)="handgleLogout()">
+        <span>Logout</span>
+        <i class="logout-icon">→</i>
+      </button>
+    </div>
   </div>
 
   <!-- Overlay -->

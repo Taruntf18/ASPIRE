@@ -11,6 +11,6 @@ export class AqmService {
 
   // Method to POST AQM data to the backend
   postAqmData(data: any): Observable<any> {
-    return this.http.post<any>(`${baseUrl}aqmData`, data);
+    return this.http.post<any>(`${baseUrl}postAqmData`, data);
   }
 }

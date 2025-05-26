@@ -6,7 +6,7 @@ export const routes: Routes = [
 
     {
         path: '',
-        loadComponent:() => import('./Component/login/login.component').then(m => m.LoginComponent)
+        loadComponent:() => import('./Component/login/login.component').then(m => m.LoginComponent),
     },
     {
         path: 'aqm-amendment-request',

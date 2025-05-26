@@ -26,29 +26,28 @@ export class AQMComponent implements OnInit {
   isLoading = false;
 
   constructor(
-    private fb: FormBuilder, 
-    private http: HttpClient, 
+    private fb: FormBuilder,
     private apiService: AqmService,
     private authService: AuthService
   ) {
     this.aqmForm = this.fb.group({
-      issueNumber: ['', [Validators.required]],
+      issueNo: ['', [Validators.required]],
       issueDate: ['', [Validators.required]],
-      revisionNumber: ['', [Validators.required]],
+      revisionNo: ['', [Validators.required]],
       revisionDate: ['', [Validators.required]],
       existingDetails: ['', [Validators.required]],
       existingDetailsUpload: ['N'], // Track if document is uploaded (Y/N)
       changesSuggested: ['', [Validators.required]],
       changesSuggestedUpload: ['N'], // Track if document is uploaded (Y/N)
-      mrComments:[''],
-      empno:[authService.getUser().employeeModel.empno, Validators.required],
-      status:["MR", Validators.required],
-      aqmDocument: [null, Validators.required]
+      mrComments: [''],
+      requestOn: [''],
+      status: ['MR', Validators.required],
+      empno: [authService.getUser().employeeModel.empno, Validators.required],
+      aqmDocument: [null, Validators.required],
     });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onFileChange(event: any, field: string): void {
     const file = event.target.files[0];
@@ -101,67 +100,72 @@ export class AQMComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const formData = new FormData();
+  if (this.aqmForm.valid) {
+    this.isLoading = true;
     
-    // Append all form values
-    Object.keys(this.aqmForm.value).forEach(key => {
-      if (key !== 'aqmDocument' && key !== 'existingDetailsDoc' && key !== 'changesSuggestedDoc') {
-        formData.append(key, this.aqmForm.value[key]);
+    // Step 1: Build plain JSON object from form values
+    const aqmFormJson: any = {};
+
+    Object.keys(this.aqmForm.value).forEach((key) => {
+      // Exclude file-related fields and only include form data
+      if (
+        key !== 'aqmDocument' &&
+        key !== 'existingDetailsDoc' &&
+        key !== 'changesSuggestedDoc'
+      ) {
+        aqmFormJson[key] = this.aqmForm.value[key];
       }
     });
 
-    // Append files
-    if (this.aqmDocumentFile) {
-      formData.append('aqmDocument', this.aqmDocumentFile);
-    }
-    if (this.existingDetailsDocFile) {
-      formData.append('existingDetailsDoc', this.existingDetailsDocFile);
-    }
-    if (this.changesSuggestedDocFile) {
-      formData.append('changesSuggestedDoc', this.changesSuggestedDocFile);
-    }
+    // Step 2: Add nested JSON object for aspireAqmAmendmentFlowWrapper
+    aqmFormJson['aspireAqmAmendmentFlowWrapper'] = {
+      reqFromRole: 'MR-Office',
+      requestFrom: this.authService.getUser().employeeModel.empno,
+      reqToRole: 'MR',
+      status: 'Requested',
+    };
 
-    // Log form data for debugging
-    for (const [key, value] of (formData as any).entries()) {
-      console.log(`${key}:`, value instanceof File ? value.name : value);
-    }
-    if (this.aqmForm.valid) {
+    // Step 3: Print JSON (for debugging)
+    console.log('AQM Form JSON:', JSON.stringify(aqmFormJson, null, 2));
 
-      // Submit to API
-      // this.apiService.postAqmData(formData).subscribe({
-      //   next: (res) => {
-      //     console.log("AQM upload successful", res);
-      //     // Add any success handling here
-      //   },
-      //   error: (error) => {
-      //     console.log("AQM upload error", error);
-      //     // Add error handling here
-      //   }
-      // });
-      
-    } else {
-      this.aqmForm.markAllAsTouched();
-      console.log('Form is invalid - please check all required fields');
-    }
+    // Step 4: Submit only the JSON data without files
+    this.apiService.postAqmData(aqmFormJson).subscribe({
+      next: (res) => {
+        console.log("AQM submission successful", res);
+        this.isLoading = false;
+        // You might want to add a success notification here
+      },
+      error: (err) => {
+        console.log("AQM submission error", err);
+        this.isLoading = false;
+        // You might want to add an error notification here
+      }
+    });
+  } else {
+    this.aqmForm.markAllAsTouched();
+    console.log('Form is invalid - please check all required fields');
   }
+}
 
   resetForm(): void {
     this.aqmForm.reset({
       existingDetailsUpload: 'N',
-      changesSuggestedUpload: 'N'
+      changesSuggestedUpload: 'N',
     });
     this.aqmDocumentFile = null;
     this.existingDetailsDocFile = null;
     this.changesSuggestedDocFile = null;
-    
+
     // Reset file inputs
-    ['aqmDocument', 'existingDetailsDoc', 'changesSuggestedDoc'].forEach(field => {
-      const fileInput = document.getElementById(field) as HTMLInputElement;
-      if (fileInput) fileInput.value = '';
-    });
+    ['aqmDocument', 'existingDetailsDoc', 'changesSuggestedDoc'].forEach(
+      (field) => {
+        const fileInput = document.getElementById(field) as HTMLInputElement;
+        if (fileInput) fileInput.value = '';
+      }
+    );
 
     // Mark all controls as untouched
-    Object.keys(this.aqmForm.controls).forEach(key => {
+    Object.keys(this.aqmForm.controls).forEach((key) => {
       this.aqmForm.get(key)?.markAsUntouched();
     });
   }
