@@ -37,5 +37,5 @@ export const routes: Routes = [
         loadComponent: () => import('./Component/aqm-status/aqm-status.component').then(m => m.AqmStatusComponent),
         canActivate:[authGuard, roleGuard],
         data: { roles: ['MR-Office', 'MR', 'DR'] }
-    },
+    }
 ];

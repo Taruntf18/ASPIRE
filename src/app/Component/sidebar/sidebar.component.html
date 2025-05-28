@@ -17,45 +17,44 @@
       <div class="nav-section">
         <a class="nav-item section-header" (click)="toggleSidebar()">
           <i class="icon">AQM</i>
-          
           <i class="dropdown-icon">▼</i>
         </a>
         <div class="submenu">
           @if(MR_OFFICE_RolePresent()){
-          <a
-            class="nav-item"
-            routerLink="/aqm-amendment-request"
-            routerLinkActive="active"
-            (click)="toggleSidebar()"
-          >
-            <span>Request of AQM Amendment - MR Office</span>
-          </a>
+            <a
+              class="nav-item"
+              routerLink="/aqm-amendment-request"
+              routerLinkActive="active"
+              (click)="toggleSidebar()"
+            >
+              <span>Request of AQM Amendment - MR Office</span>
+            </a>
           } @if(MR_RolePresent()){
-          <a
-            class="nav-item"
-            routerLink="/aqm-amendment-pending"
-            routerLinkActive="active"
-            (click)="toggleSidebar()"
-          >
-            <span>Pending List for Approval - MR</span>
-          </a>
+            <a
+              class="nav-item"
+              routerLink="/aqm-amendment-pending"
+              routerLinkActive="active"
+              (click)="toggleSidebar()"
+            >
+              <span>Pending List for Approval - MR</span>
+            </a>
           } @if(MR_OFFICE_RolePresent()){
-          <a
-            class="nav-item"
-            routerLink="/aqm-amendment-clarification"
-            routerLinkActive="active"
-            (click)="toggleSidebar()"
-          >
-            <span>Request for Clarification - MR Office</span>
-          </a>
-          <a
-            class="nav-item"
-            routerLink="/aqm-upload-document"
-            routerLinkActive="active"
-            (click)="toggleSidebar()"
-          >
-            <span>AQM - Pending List for Uploading Signed Copy</span>
-          </a>
+            <a
+              class="nav-item"
+              routerLink="/aqm-amendment-clarification"
+              routerLinkActive="active"
+              (click)="toggleSidebar()"
+            >
+              <span>Request for Clarification - MR Office</span>
+            </a>
+            <a
+              class="nav-item"
+              routerLink="/aqm-upload-document"
+              routerLinkActive="active"
+              (click)="toggleSidebar()"
+            >
+              <span>AQM - Pending List for Uploading Signed Copy</span>
+            </a>
           }
           <a
             class="nav-item"
@@ -176,12 +175,10 @@
     <!-- Employee Details Section -->
     <div class="employee-section">
       <div class="employee-details">
-        <div class="employee-avatar">
-          <img src="assets/default-avatar.png" alt="Employee Avatar">
-        </div>
+       
         <div class="employee-info">
-          <div class="employee-name">{{employeeName}}</div>
-          <div class="employee-role">{{employeeRole}}</div>
+          <div class="employee-name">{{loginUserData.employeeModel.empname}} - {{loginUserData.employeeModel.empno}}</div>
+          <div class="employee-role">{{loginUserData.roles[0]}}</div>
         </div>
       </div>
       <button class="logout-btn" (click)="handgleLogout()">

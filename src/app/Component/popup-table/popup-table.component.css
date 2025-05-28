@@ -1,0 +1,180 @@
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 80%;
+  /* Adjust this percentage to make it wider or narrower */
+  max-width: 800px;
+  /* Set a maximum width if needed */
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.popup-body {
+  margin: 15px 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+.form-textarea {
+  width: 98%;
+  min-height: 100px;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+.submit-btn {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #45a049;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+/* First table styles */
+.first-table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto 40px auto;
+  border: 1px solid #000;
+}
+
+.first-table td {
+  border: 1px solid #000;
+  padding: 8px;
+  vertical-align: middle;
+}
+
+.first-table thead td {
+  font-weight: bold;
+}
+
+b {
+  font-weight: bold;
+}
+
+.first-table td[rowspan="3"] {
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* Second document styles */
+.second-doc h1 {
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.second-doc table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.second-doc table,
+.second-doc th,
+.second-doc td {
+  border: 1px solid black;
+}
+
+.second-doc th,
+.second-doc td {
+  padding: 8px;
+  text-align: left;
+}
+
+.signature-line {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.signature-line div {
+  width: 45%;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.boxed {
+  border: 1px solid black;
+  padding: 10px;
+  margin: 20px 0;
+  min-height: 120px;
+}
+
+.content-box {
+  height: 150px;
+  border: 1px solid black;
+  margin-bottom: 20px;
+}
