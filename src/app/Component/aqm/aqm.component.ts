@@ -120,8 +120,8 @@ export class AQMComponent implements OnInit {
       aqmFormJson['aspireAqmAmendmentFlowWrapper'] = {
         reqFromRole: 'MR-Office',
         requestFrom: this.authService.getUser().employeeModel.empno,
+        fromDate: new Date(),
         reqToRole: 'MR',
-        status: 'Requested',
       };
 
       console.log('AQM Form JSON:', JSON.stringify(aqmFormJson, null, 2));
@@ -151,6 +151,7 @@ export class AQMComponent implements OnInit {
             })
           }
           this.isLoading = false;
+          this.resetForm();
         },
         error: (err) => {
           console.log("AQM submission error", err);

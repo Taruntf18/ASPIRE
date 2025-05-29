@@ -24,8 +24,6 @@ export class AQMPendingListForApprovalComponent implements OnInit {
     this.aqmService.getDataByStatus('MR').subscribe({
       next: (data) => {
         this.aqmData = data;
-        console.log(this.aqmData);
-        
       },
       error: (error) => {
         console.error('Error fetching AQM data:', error);

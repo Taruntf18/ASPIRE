@@ -15,6 +15,7 @@ export class PopupTableComponent {
   @Input() visible: boolean = false;
   @Input() typeOfsubmit: any;
   @Output() visibleChange = new EventEmitter<boolean>();
+   @Output() fetchAqmData = new EventEmitter<void>();
   commentsForm: FormGroup;
   aspireAqmAmendmentFlowModel: any;
 
@@ -37,7 +38,7 @@ export class PopupTableComponent {
     let jsonData = {
       "aqmMasterTransId": this.data.aqmMasterTransId,
       "status": "MR_office_for_clarification", 
-      "aspireAqmAmendmentFlowModel": {
+      "aspireAqmAmendmentFlowWrapper": {
         "status":"",
         "remarks": this.commentsForm.controls['comments'].value,
         "reqFromRole": "MR",
@@ -48,29 +49,39 @@ export class PopupTableComponent {
     };
 
     if (this.typeOfsubmit == 'approve') {
-      jsonData.aspireAqmAmendmentFlowModel.status = "Approved";
+      jsonData.aspireAqmAmendmentFlowWrapper.status = "Approved";
       console.log(jsonData);
       this.aqmService.updateAqmWithStatus(jsonData).subscribe({
-        next: (res) => console.log(res),
+        next: (res) => {
+          console.log(res);
+          window.location.reload()
+        },
         error: (error) => console.log(error)
       })
     } else if (this.typeOfsubmit == 'resend') {
-      jsonData.aspireAqmAmendmentFlowModel.status = "Sent Back";
+      jsonData.aspireAqmAmendmentFlowWrapper.status = "Sent Back";
       console.log(jsonData);
       this.aqmService.updateAqmWithStatus(jsonData).subscribe({
-        next: (res) => console.log(res),
+        next: (res) => {
+          console.log(res);
+          window.location.reload()
+        },
         error: (error) => console.log(error)
       })
     } else if (this.typeOfsubmit == 'reject') {
       jsonData.status = "Rejected"
-      jsonData.aspireAqmAmendmentFlowModel.status = "Reject";
+      jsonData.aspireAqmAmendmentFlowWrapper.status = "Reject";
       console.log(jsonData);
       
       this.aqmService.updateAqmWithStatus(jsonData).subscribe({
-        next: (res) => console.log(res),
+        next: (res) => {
+          console.log(res);
+          window.location.reload()
+        },
         error: (error) => console.log(error)
       })
     }
     this.close();
   }
 }
+

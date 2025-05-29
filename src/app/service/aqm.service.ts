@@ -27,8 +27,5 @@ export class AqmService {
   updateAqmWithStatus(data: any): Observable<any>{
     console.log(data);
     return this.http.post<any[]>(`${baseUrl}updateAqmData`, data);
-    
-     
-    
   }
 }

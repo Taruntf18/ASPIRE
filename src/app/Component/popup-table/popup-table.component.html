@@ -5,9 +5,8 @@
     <div class="popup-body">
       <table class="first-table">
         <thead>
-          <tr>
-            <td rowspan="4" style="text-align: center;"><img
-                src="assets/NAL/CSIR-National_Aerospace_Laboratories_Logo.png" height="100" alt=""></td>
+          <tr >
+            <td rowspan="4" style="text-align: center;"><img src="assets/NAL/CSIR-National_Aerospace_Laboratories_Logo.png" height="100" alt=""></td>
             <td colspan="4"><b>CSIR - NATIONAL AEROSPACE LABORATORIES</b></td>
           </tr>
           <tr>
@@ -36,9 +35,9 @@
         <table>
           <tr>
             <td style="font-weight: bold;">From :</td>
-            <td> <span style="font-weight:normal;">MR - Office</span></td>
-            <td class="italic">Date : {{data.requestOn}}</td>
+            <td> <span  style="font-weight:normal;"> MR - OFFICE </span></td>
             <!-- <td class="italic">Division :</td> -->
+            <td class="italic">Date : {{data.requestOn}}</td>
           </tr>
           <tr>
             <td style="font-weight: bold;">To : </td>
@@ -57,13 +56,33 @@
           <div style="height: 80px;">{{data.changesSuggested}}</div>
           <p class="italic">(Person suggesting changes)</p>
         </div>
+<!-- 
+        <p>The above mentioned changes may / may not be incorporated in the AQM and implemented.</p>
+        <div class="boxed">
+          <div style="height: 50px;"></div>
+          <div class="signature-line">
+            <div>
+              <p class="underline">(Issuing authority)</p>
+            </div>
+            <div>
+              <p class="underline">(Management Representative)</p>
+            </div>
+          </div>
+        </div>
 
+        <p>The above approved changes may be incorporated in the AQM and implemented with effect from ______.</p>
+        <div class="boxed">
+          <div style="height: 50px;"></div>
+          <div class="signature-line">
+            <div>
+              <p class="underline">(Approving Authority)</p>
+            </div>
+            <div></div>
+          </div>
+        </div> -->
       </div>
 
     </div>
-
-    <!-- New table for request tracking -->
-    <!-- New table for request tracking -->
     <div class="popup-body">
       <table class="request-table">
         <thead>
@@ -71,25 +90,25 @@
             <th>SL NO</th>
             <th>Request From</th>
             <th>From Date</th>
+            <th>Request To</th>
             <th>Status</th>
             <th>Comments</th>
           </tr>
         </thead>
         <tbody>
-          @for(item of data.aspireAqmAmendmentFlowModel; track data.aspireAqmAmendmentFlowModel.transId ){
-            <tr>
-              <td>1</td> <!-- Added SL NO column -->
-              <td>{{item.reqFromRole || 'N/A'}}</td>
-              <td>{{item.fromDate || 'N/A'}}</td>
-              <td>{{item.status || 'N/A'}}</td>
-              <td>{{item.remarks || 'N/A'}}</td>
-            </tr>
+          @for(item of data.aspireAqmAmendmentFlowModel; track item.transId; let i = $index){
+          <tr>
+            <td>{{i + 1}}</td> 
+            <td>{{item.reqFromRole || 'N/A'}}</td>
+            <td>{{item.fromDate || 'N/A'}}</td>
+            <td>{{item.reqToRole || 'N/A'}}</td>
+            <td>{{item.status || 'N/A'}}</td>
+            <td>{{item.remarks || 'N/A'}}</td>
+          </tr>
           }
-          <!-- Add more rows if needed -->
         </tbody>
       </table>
     </div>
-
     <form [formGroup]="commentsForm" (ngSubmit)="submitComment()">
       <div class="popup-body">
         <textarea class="form-textarea" formControlName="comments" placeholder="Enter your comments here..."></textarea>
@@ -98,4 +117,5 @@
     </form>
   </div>
 </div>
+
 }

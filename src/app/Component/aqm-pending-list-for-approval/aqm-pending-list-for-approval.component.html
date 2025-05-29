@@ -1,7 +1,7 @@
 <div class="aqm-background">
   <div class="aqm-container">
     <header class="header">
-      <h1>AQM - PENDING LIST</h1>
+      <h1>AQM</h1>
       <p>APEX QUALITY MANUAL</p>
     </header>
 
@@ -21,25 +21,26 @@
 
         <tbody>
           @for(item of aqmData; track item.aqmMasterTransId){
-          <tr class="aqm-row"  >
-            <td>MR Office</td>
-            <td>DIRECTOR</td>
-            <td>{{item.issueNo}}</td>
-            <td>{{item.issueDate}}</td>
-            <td>{{item.revisionNo}}</td>
-            <td>{{item.revisionDate}}</td>
-            <td class="action-cell">
-              <button class="approve-btn" (click)="showPopup(item, 'approve')">Approve</button>
-              <button class="reject-btn" (click)="showPopup(item, 'reject')">Reject</button>
-              <button class="resend-btn" (click)="showPopup(item, 'resend')">Resend</button>
-            </td>
-          </tr>
+            <tr class="aqm-row"  >
+              <td>MR Office</td>
+              <td>MR</td>
+              <td>{{item.issueNo}}</td>
+              <td>{{item.issueDate}}</td>
+              <td>{{item.revisionNo}}</td>
+              <td>{{item.revisionDate}}</td>
+              <td class="action-cell">
+                <button class="approve-btn" (click)="showPopup(item, 'approve')">Approve</button>
+                <button class="reject-btn" (click)="showPopup(item, 'reject')">Reject</button>
+                <button class="resend-btn" (click)="showPopup(item, 'resend')">Resend</button>
+              </td>
+            </tr>
           }
         </tbody>
       </table>
-
-      <app-popup-table [data]="selectedData"  [typeOfsubmit]="submitType"  [(visible)]="isPopupVisible">
-      </app-popup-table>
+      @if(selectedData){
+        <app-popup-table [data]="selectedData" (fetchAqmData)="fetchAqmData()"  [typeOfsubmit]="submitType"  [(visible)]="isPopupVisible">
+        </app-popup-table>
+      }
     </div>
   </div>
 </div>

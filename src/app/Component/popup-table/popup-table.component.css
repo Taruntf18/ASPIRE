@@ -59,7 +59,7 @@ th {
 }
 
 .form-textarea {
-  width: 98%;
+  width: 100%;
   min-height: 100px;
   padding: 8px;
   margin-bottom: 10px;
@@ -152,7 +152,6 @@ b {
 
 .italic {
   font-style: italic;
-  padding-left: 550px;
 }
 
 .bold {
@@ -179,6 +178,7 @@ b {
   border: 1px solid black;
   margin-bottom: 20px;
 }
+
 .request-table {
   width: 100%;
   border-collapse: collapse;
