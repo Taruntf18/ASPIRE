@@ -17,10 +17,15 @@ export class AQMPendingListForApprovalComponent implements OnInit {
   constructor(private aqmService: AqmService) { }
 
   ngOnInit(): void {
-    this.aqmService.getDataByStatus().subscribe({
+    this.fetchAqmData();
+  }
+
+  fetchAqmData(){
+    this.aqmService.getDataByStatus('MR').subscribe({
       next: (data) => {
         this.aqmData = data;
-        console.log('Fetched AQM Data:', data);
+        console.log(this.aqmData);
+        
       },
       error: (error) => {
         console.error('Error fetching AQM data:', error);
@@ -29,10 +34,9 @@ export class AQMPendingListForApprovalComponent implements OnInit {
   }
 
   showPopup(item: any, type: String) {
-    this.isPopupVisible = true;
-    this.selectedData = item;
+    this.selectedData =  JSON.parse(JSON.stringify(item));
     this.submitType = type;
-    console.log(this.selectedData);
+    this.isPopupVisible = true;
   }
 
 }

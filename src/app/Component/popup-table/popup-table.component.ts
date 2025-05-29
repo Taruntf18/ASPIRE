@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AqmService } from '../../service/aqm.service';
+import { AuthService } from '../AppGuard/auth.service';
 
 @Component({
   selector: 'app-popup-table',
@@ -14,28 +16,60 @@ export class PopupTableComponent {
   @Input() typeOfsubmit: any;
   @Output() visibleChange = new EventEmitter<boolean>();
   commentsForm: FormGroup;
+  aspireAqmAmendmentFlowModel: any;
 
-  constructor(private fb: FormBuilder){
+  constructor(private fb: FormBuilder, private aqmService: AqmService, private authService: AuthService) {
     this.commentsForm = this.fb.group({
-      comments:['', Validators.required]
+      comments: ['', Validators.required]
     })
   }
 
   close() {
+    this.commentsForm.controls['comments'].setValue('');
     this.visible = false;
     this.visibleChange.emit(false);
+    console.log(this.data);
+    console.log(this.authService.getUser());
+    
   }
 
-  
   submitComment() {
-    console.log('Submitted comment:' + this.commentsForm.get('comments')?.value);
-    console.log('type of submit ' + this.typeOfsubmit);
-    if(this.typeOfsubmit == 'approve'){
+    let jsonData = {
+      "aqmMasterTransId": this.data.aqmMasterTransId,
+      "status": "MR_office_for_clarification", 
+      "aspireAqmAmendmentFlowModel": {
+        "status":"",
+        "remarks": this.commentsForm.controls['comments'].value,
+        "reqFromRole": "MR",
+        "reqToRole": "MR-Office",
+        "requestFrom": this.authService.getUser().employeeModel.empno,
+        "requestTo": this.authService.getUser().employeeModel.empno,
+      },
+    };
 
-    }else if(this.typeOfsubmit == 'resend'){
-
-    }else if(this.typeOfsubmit == 'reject'){
+    if (this.typeOfsubmit == 'approve') {
+      jsonData.aspireAqmAmendmentFlowModel.status = "Approved";
+      console.log(jsonData);
+      this.aqmService.updateAqmWithStatus(jsonData).subscribe({
+        next: (res) => console.log(res),
+        error: (error) => console.log(error)
+      })
+    } else if (this.typeOfsubmit == 'resend') {
+      jsonData.aspireAqmAmendmentFlowModel.status = "Sent Back";
+      console.log(jsonData);
+      this.aqmService.updateAqmWithStatus(jsonData).subscribe({
+        next: (res) => console.log(res),
+        error: (error) => console.log(error)
+      })
+    } else if (this.typeOfsubmit == 'reject') {
+      jsonData.status = "Rejected"
+      jsonData.aspireAqmAmendmentFlowModel.status = "Reject";
+      console.log(jsonData);
       
+      this.aqmService.updateAqmWithStatus(jsonData).subscribe({
+        next: (res) => console.log(res),
+        error: (error) => console.log(error)
+      })
     }
     this.close();
   }
